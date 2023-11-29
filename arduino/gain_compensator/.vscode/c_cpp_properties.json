@@ -39,6 +39,7 @@
             "defines": [
                 "PLATFORMIO=60111",
                 "ARDUINO_AVR_NANO",
+                "portUSE_WDTO=WDTO_15MS",
                 "F_CPU=16000000L",
                 "ARDUINO_ARCH_AVR",
                 "ARDUINO=10808",
