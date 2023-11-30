@@ -1,6 +1,6 @@
 #include <Arduino.h>
 #include <Arduino_FreeRTOS.h>
-#include <semphr.h>  // add the FreeRTOS functions for Semaphores (or Flags).
+#include <semphr.h>
 
 
 void task_rxtx_serial(void *pvParameters);
@@ -54,3 +54,4 @@ void task_rxtx_serial(void *pvParameters){
 }
 
 
+// Adding a comment to check if the gitlab from FAU gets updates automatically
