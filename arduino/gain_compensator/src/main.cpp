@@ -14,6 +14,10 @@ void setup() {
     if ( ( x_serial_txrx_semaphore ) != NULL )
       xSemaphoreGive( ( x_serial_txrx_semaphore ) );  // Make the Serial Port available for use
   }
+
+    // Create 2 queues of 10 elements for possible commands and messages
+    x_received_commands_queue = xQueueCreate(QUEUE_LEN, sizeof(command_t)); 
+    x_messages_to_send_queue = xQueueCreate(QUEUE_LEN,sizeof(message_t)); 
   
   // Create task
   xTaskCreate(

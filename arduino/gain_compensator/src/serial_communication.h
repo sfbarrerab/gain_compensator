@@ -4,9 +4,9 @@
 #include <semphr.h>
 #include <queue.h>
 
-#define QUEUE_LEN 5
-#define SEMAPHORE_TICKS_DELAY 5
-#define QUEUE_TICKS_DELAY 5
+#define QUEUE_LEN 10
+#define SEMAPHORE_BLOCK_TIME 15
+#define QUEUE_SEND_BLOCK_TIME 15
 
 extern SemaphoreHandle_t x_serial_txrx_semaphore;
 extern QueueHandle_t x_received_commands_queue;

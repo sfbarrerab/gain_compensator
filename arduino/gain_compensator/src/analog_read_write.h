@@ -5,6 +5,6 @@
 
 // Define an array of Arduino analog ports
 const int analog_input_ports[4] = {A0, A1, A2, A3};
-const int analog_output_ports[4] = {A4, A5, A6, A7};
+const int analog_output_ports[4] = {6,9,10,11};
 
 void task_analogue_read_write(void *pvParameters);

@@ -21,18 +21,18 @@ void command_to_structure(String command, command_t *received_message){
 
 void task_rx_serial(void *pvParameters){
     command_t received_message;
-    // Create a queue of 10 elements of possible commands
-    x_received_commands_queue = xQueueCreate(10, sizeof(command_t));  
   
     while(true){
         // take the semaphore, if not available wait for 2ms
-        if ( xSemaphoreTake( x_serial_txrx_semaphore, ( TickType_t ) 2 ) == pdTRUE )
+        if ( xSemaphoreTake( x_serial_txrx_semaphore, SEMAPHORE_BLOCK_TIME ) == pdTRUE )
         {
             while (!Serial.available());
             String command_received = Serial.readString();
             command_to_structure(command_received , &received_message);
             // send the message into the Queue
-            xQueueSend(x_received_commands_queue,(void *)&received_message, 0);
+            Serial.print("Command received: ");
+            Serial.println(command_received);
+            xQueueSend(x_received_commands_queue,(void *)&received_message, QUEUE_SEND_BLOCK_TIME);
             xSemaphoreGive( x_serial_txrx_semaphore );  // give the semaphore
         }
         vTaskDelay( 15 / portTICK_PERIOD_MS);
@@ -44,10 +44,9 @@ void task_tx_serial(void *pvParameters){
     message_t message_to_send;
   
     while(true){
-        // take the semaphore, if not available wait for 2ms
-        if ( xSemaphoreTake( x_serial_txrx_semaphore, ( TickType_t ) 2 ) == pdTRUE )
+        if(x_messages_to_send_queue != NULL && xQueueReceive(x_messages_to_send_queue, (void *)&message_to_send, 0) == pdTRUE)
         {
-            if(x_messages_to_send_queue != NULL && xQueueReceive(x_messages_to_send_queue, (void *)&message_to_send, ( TickType_t ) 10) == pdTRUE)
+            if ( xSemaphoreTake( x_serial_txrx_semaphore, portMAX_DELAY ) == pdTRUE )
             {
                 while (!Serial.available());
                 Serial.print("Channel: ");
@@ -56,8 +55,8 @@ void task_tx_serial(void *pvParameters){
                 Serial.print("Value: ");
                 Serial.println(message_to_send.value);
 
+                xSemaphoreGive( x_serial_txrx_semaphore );  // give the semaphore
             }
-            xSemaphoreGive( x_serial_txrx_semaphore );  // give the semaphore
         }
         vTaskDelay( 15 / portTICK_PERIOD_MS);
   }
