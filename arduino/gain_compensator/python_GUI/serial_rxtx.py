@@ -9,7 +9,11 @@ def write_read(x):
     data = arduino.readline() 
     return str(data)
 
+
 while True: 
     num = input("Enter a number: ") # Taking input from user 
     value = write_read(num).split('\'')[1].split('\\')[0]
     print(value) # printing the value 
+
+
+ #  "1?3?200"  write in A7 200

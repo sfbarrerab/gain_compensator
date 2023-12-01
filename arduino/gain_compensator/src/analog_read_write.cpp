@@ -1,7 +1,5 @@
 #include "analog_read_write.h"
 
-QueueHandle_t x_messages_to_send_queue;
-
 void task_analogue_read_write(void *pvParameters){
     command_t received_command;
     message_t message_to_send;
@@ -26,6 +24,5 @@ void task_analogue_read_write(void *pvParameters){
             }
         }
         vTaskDelay( 10 / portTICK_PERIOD_MS);
-
     }
 }
