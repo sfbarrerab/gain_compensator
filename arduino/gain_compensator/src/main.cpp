@@ -1,12 +1,8 @@
 #include <Arduino.h>
 #include <Arduino_FreeRTOS.h>
-#include <semphr.h>
+#include "serial_communication.h"
+#include "analog_read_write.h"
 
-
-void task_rxtx_serial(void *pvParameters);
-
-// Declare a mutex Semaphore Handle which we will use to manage the Serial Port.
-SemaphoreHandle_t x_serial_txrx_semaphore;
 
 void setup() {
   Serial.begin(115200);
@@ -27,6 +23,14 @@ void setup() {
     ,  NULL
     ,  2  // Priority 
     ,  NULL );
+
+    xTaskCreate(
+    task_analogue_read_write
+    ,  "Analogue ports reading writing"   // name
+    ,  128  // stack size
+    ,  NULL
+    ,  2  // Priority 
+    ,  NULL );
   
   // Task scheduler is automatically initiated
 
@@ -36,22 +40,3 @@ void loop() {
   // task already setup run the whole process
 
 }
-
-void task_rxtx_serial(void *pvParameters){
-  
-  while(true){
-    // take the semaphore, if not available wait for 5ms
-    if ( xSemaphoreTake( x_serial_txrx_semaphore, ( TickType_t ) 5 ) == pdTRUE )
-    {
-      while (!Serial.available());
-      double value = Serial.readString().toDouble();
-      Serial.println(value+1.0);
-      xSemaphoreGive( x_serial_txrx_semaphore );  // give the semaphore
-    }
-    vTaskDelay( 15 / portTICK_PERIOD_MS);
-  }
-  
-}
-
-
-// Adding a comment to check if the gitlab from FAU gets updates automatically
