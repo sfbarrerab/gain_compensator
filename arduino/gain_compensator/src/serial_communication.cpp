@@ -23,16 +23,17 @@ void task_rx_serial(void *pvParameters){
     command_t received_message;
   
     while(true){
-        // take the semaphore, if not available wait for 2ms
+        // take the semaphore if there is an incomming message
+        while (!Serial.available());
         if ( xSemaphoreTake( x_serial_txrx_semaphore, SEMAPHORE_BLOCK_TIME ) == pdTRUE )
-        {
-            while (!Serial.available());
+        {  
             String command_received = Serial.readString();
             command_to_structure(command_received , &received_message);
-            // send the message into the Queue
-            Serial.print("Command received: ");
-            Serial.println(command_received);
-            xQueueSend(x_received_commands_queue,(void *)&received_message, QUEUE_SEND_BLOCK_TIME);
+
+            if(xQueueSend(x_received_commands_queue,(void *)&received_message, QUEUE_SEND_BLOCK_TIME) == pdTRUE){
+                Serial.print("Command send to queue: ");
+                Serial.println(command_received);
+            }
             xSemaphoreGive( x_serial_txrx_semaphore );  // give the semaphore
         }
         vTaskDelay( 15 / portTICK_PERIOD_MS);
@@ -46,16 +47,13 @@ void task_tx_serial(void *pvParameters){
     while(true){
         if(x_messages_to_send_queue != NULL && xQueueReceive(x_messages_to_send_queue, (void *)&message_to_send, 0) == pdTRUE)
         {
-            if ( xSemaphoreTake( x_serial_txrx_semaphore, portMAX_DELAY ) == pdTRUE )
-            {
-                while (!Serial.available());
+            if ( xSemaphoreTake( x_serial_txrx_semaphore, SEMAPHORE_BLOCK_TIME ) == pdTRUE ){
                 Serial.print("Channel: ");
                 Serial.println(message_to_send.channel);
 
                 Serial.print("Value: ");
                 Serial.println(message_to_send.value);
-
-                xSemaphoreGive( x_serial_txrx_semaphore );  // give the semaphore
+                xSemaphoreGive( x_serial_txrx_semaphore );
             }
         }
         vTaskDelay( 15 / portTICK_PERIOD_MS);

@@ -21,6 +21,6 @@ void task_analogue_read_write(void *pvParameters){
                 analogWrite(analog_output_ports[received_command.channel],received_command.value);
             }
         }
-        vTaskDelay( 15 / portTICK_PERIOD_MS);
+        vTaskDelay( 10 / portTICK_PERIOD_MS);
     }
 }
