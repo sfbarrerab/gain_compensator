@@ -9,13 +9,13 @@
 #define QUEUE_TICKS_DELAY 5
 
 extern SemaphoreHandle_t x_serial_txrx_semaphore;
-extern QueueHandle_t x_commands_queue;
+extern QueueHandle_t x_received_commands_queue;
 
 // Define strcture of the messages
 typedef struct{
-    int command;
-    int channel;
-    float value;
+    uint8_t command;
+    uint8_t channel;
+    int value;
 }command_t;
 
 void task_rxtx_serial(void *pvParameters);
