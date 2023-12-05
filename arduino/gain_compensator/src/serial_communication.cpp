@@ -63,8 +63,9 @@ void task_txrx_serial(void *pvParameters){
                 command_received.trim(); // remove \n character
                 if(!command_to_structure(command_received , &received_message)){
                     if(xQueueSend(x_received_commands_queue,(void *)&received_message, QUEUE_SEND_BLOCK_TIME) == pdTRUE){
-                        Serial.print("Command send to queue: ");
-                        Serial.println(command_received);
+                        // next messages are just for debug
+                        //Serial.print("Command: ");
+                        //Serial.println(command_received);
                     }
                 }else{
                     Serial.print("The command received (");
@@ -80,9 +81,9 @@ void task_txrx_serial(void *pvParameters){
         {
             if ( xSemaphoreTake( x_serial_txrx_semaphore, SEMAPHORE_BLOCK_TIME ) == pdTRUE ){
                 Serial.print("Channel: ");
-                Serial.println(message_to_send.channel);
+                Serial.print(message_to_send.channel);
 
-                Serial.print("Value: ");
+                Serial.print(", Value: ");
                 Serial.println(message_to_send.value);
                 xSemaphoreGive( x_serial_txrx_semaphore );
             }
