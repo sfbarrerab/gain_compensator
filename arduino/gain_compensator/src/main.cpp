@@ -21,16 +21,8 @@ void setup() {
     
     // Create task
     xTaskCreate(
-      task_rx_serial
-      ,  "Rx for serial communication"   // name
-      ,  128  // stack size
-      ,  NULL
-      ,  2  // Priority 
-      ,  NULL );
-
-    xTaskCreate(
-      task_tx_serial
-      ,  "Tx for serial communication"   // name
+      task_txrx_serial
+      ,  "Tx and Rx for serial communication"   // name
       ,  128  // stack size
       ,  NULL
       ,  2  // Priority 

@@ -7,6 +7,8 @@
 #define QUEUE_LEN 10
 #define SEMAPHORE_BLOCK_TIME 15
 #define QUEUE_SEND_BLOCK_TIME 15
+#define MAX_NUMBER_OF_CHANNELS 8
+#define MAX_VALUE 256
 
 extern SemaphoreHandle_t x_serial_txrx_semaphore;
 extern QueueHandle_t x_received_commands_queue;
@@ -23,5 +25,4 @@ typedef struct{
     int value;
 }message_t;
 
-void task_rx_serial(void *pvParameters);
-void task_tx_serial(void *pvParameters);
+void task_txrx_serial(void *pvParameters);
