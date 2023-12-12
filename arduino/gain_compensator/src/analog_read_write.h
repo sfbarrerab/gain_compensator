@@ -4,7 +4,7 @@
 #include "serial_communication.h"
 
 // Define an array of Arduino analog ports
-const int analog_input_ports[4] = {A0, A1, A2, A3};
-const int analog_output_ports[4] = {6,9,10,11};
+const int analog_input_ports[MAX_NUMBER_OF_CHANNELS] = {A0, A1, A2, A3, A4, A5, A6, A7};
+const int analog_output_ports[MAX_NUMBER_OF_CHANNELS] = {2, 3, 4, 5, 6, 7, 8, 9};
 
 void task_analogue_read_write(void *pvParameters);

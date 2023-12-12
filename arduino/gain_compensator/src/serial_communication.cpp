@@ -39,11 +39,11 @@ uint8_t command_to_structure(String command, command_t *received_message){
         return -1;
     }
 
-    if(received_message->channel > MAX_NUMBER_OF_CHANNELS){
+    if(received_message->channel > MAX_NUMBER_OF_CHANNELS-1){
         return -1;
     }
 
-    if(received_message->value > MAX_VALUE){
+    if(received_message->value > MAX_VALUE-1){
         return -1;
     }
 

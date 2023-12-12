@@ -1,7 +1,7 @@
 import serial 
 import time 
 import PySimpleGUI as sg
-
+"""
 arduino = serial.Serial(port='COM6', baudrate=115200, timeout=1) 
 
 def write_read(x): 
@@ -10,7 +10,7 @@ def write_read(x):
     data = arduino.readline() 
     return str(data)
 
-"""
+
 while True: 
     num = input("Enter a command: ") # Taking input from user 
     value = write_read(num).split('\'')[1].split('\\')[0]
