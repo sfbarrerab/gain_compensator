@@ -1,26 +1,25 @@
-import serial 
-import time 
 import PySimpleGUI as sg
-"""
-arduino = serial.Serial(port='COM6', baudrate=115200, timeout=1) 
+import serial 
+import subprocess
 
-def write_read(x): 
-    arduino.write(bytes(x, 'utf-8')) 
-    time.sleep(0.5) 
-    data = arduino.readline() 
-    return str(data)
+# global variable that handles the serial communication
+global arduino
 
+# All the stuff inside the window.
 
-while True: 
-    num = input("Enter a command: ") # Taking input from user 
-    value = write_read(num).split('\'')[1].split('\\')[0]
-    print(value) # printing the value 
-"""
+def create_initial_window():
+    # read the ports available
+    result = subprocess.run(['python', '-m', 'serial.tools.list_ports'], capture_output=True, text=True, check=True)
+    output_coms = result.stdout.splitlines()
 
- #  "1?3?200"  write in A7 200
+    layout = [
+        [sg.Text("Select the communication port:")],
+        [sg.Combo(output_coms, key="com_port", size=(9, 1))],
+        [sg.Button("Next"), sg.Button("Exit")]
+    ]
 
+    return layout
 
-# All the stuff inside your window.
 
 def create_tab1():
     layout = [
@@ -31,18 +30,18 @@ def create_tab1():
         [sg.Output(size=(60, 10))],  # Output element to display messages
         [sg.Button("Submit"), sg.Button("Exit")]
     ]
-    return sg.Tab("Tab 1", layout)
+    return sg.Tab("Read/Write data", layout)
 
 def create_tab2():
     layout = [
         [sg.Text("Channel:"), sg.Combo([str(i) for i in range(1, 9)], key="channel_option_tab2", size=(5, 1))],
         [sg.Button("Plot Real-time Data")]
     ]
-    return sg.Tab("Tab 2", layout)
+    return sg.Tab("Plot", layout)
 
-def main():
-    sg.theme('Dark Blue 3')   # Add a touch of color
 
+def create_secondary_window():
+        
     tabs = [create_tab1(), create_tab2()]
 
     layout = [
@@ -56,7 +55,6 @@ def main():
 
         if event in (sg.WINDOW_CLOSED, "Exit"):
             break
-
 
         if values["automatic_option"]:
             window["value_to_write"].update(disabled=True)
@@ -77,6 +75,31 @@ def main():
             print("Values:", values)
 
     window.close()
+
+
+def main():
+    sg.theme('Dark Blue 3')   # Add a touch of color
+
+    window = sg.Window("Selecting port...",create_initial_window(), finalize=True)
+
+    while True:
+        event, values = window.read()
+
+        if event in (sg.WINDOW_CLOSED, "Exit"):
+            break
+
+        if event == 'Next':
+            try:
+                com_port_selected = values["com_port"]
+                arduino = serial.Serial(port=com_port_selected, baudrate=115200, timeout=1) 
+                window.close()
+                create_secondary_window()
+                break
+            except:
+                sg.popup_error("The selected COM port is not available.")      
+
+    window.close()
+
 
 if __name__ == "__main__":
     main()
