@@ -1,9 +1,10 @@
 import PySimpleGUI as sg
 import serial 
 import subprocess
+import time
 
 # global variable that handles the serial communication
-global arduino
+arduino = None
 
 # All the stuff inside the window.
 
@@ -40,6 +41,21 @@ def create_tab2():
     return sg.Tab("Plot", layout)
 
 
+def transform_values_to_serial_command(values):
+    command = ""
+    if values["read_option"]:
+        command += "0?"
+    else:
+        command += "1?"
+
+    command += values["channel_option_tab1"]
+    command += "?"
+
+    command += values["value_to_write"]
+
+    return command
+
+
 def create_secondary_window():
         
     tabs = [create_tab1(), create_tab2()]
@@ -71,8 +87,14 @@ def create_secondary_window():
 
         if event == "Submit":
             # Code for handling submit button click
-            print("Submit button clicked")
-            print("Values:", values)
+            command = transform_values_to_serial_command(values)
+            print("Command to send:")
+            print(command)
+            arduino.write(bytes(command, 'utf-8'))
+            time.sleep(0.5) 
+            data = str(arduino.readline()).split('\'')[1].split('\\')[0]
+            print("Command received:")
+            print(data)
 
     window.close()
 
@@ -90,6 +112,7 @@ def main():
 
         if event == 'Next':
             try:
+                global arduino
                 com_port_selected = values["com_port"]
                 arduino = serial.Serial(port=com_port_selected, baudrate=115200, timeout=1) 
                 window.close()
