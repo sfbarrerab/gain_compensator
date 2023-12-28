@@ -12,6 +12,7 @@ void task_analogue_read_write(void *pvParameters){
             {
                 message_to_send.channel = received_command.channel;
                 message_to_send.value = analogRead(analog_input_ports[received_command.channel]);
+                // send the read value into the buffer
                 if(x_messages_to_send_queue != NULL){
                     xQueueSend(x_messages_to_send_queue,(void *)&message_to_send, QUEUE_SEND_BLOCK_TIME);
                 }

@@ -31,7 +31,7 @@ uint8_t command_to_structure(String command, command_t *received_message){
 
     // Store the values in the structure
     received_message->command = command.substring(0, question_mark_index1).toInt();
-    received_message->channel = command.substring(question_mark_index1 + 1, question_mark_index2).toInt();
+    received_message->channel = command.substring(question_mark_index1 + 1, question_mark_index2).toInt()-1;
     received_message->value = command.substring(question_mark_index2 + 1).toInt();
 
     // Validation of the received values
@@ -63,9 +63,13 @@ void task_txrx_serial(void *pvParameters){
                 command_received.trim(); // remove \n character
                 if(!command_to_structure(command_received , &received_message)){
                     if(xQueueSend(x_received_commands_queue,(void *)&received_message, QUEUE_SEND_BLOCK_TIME) == pdTRUE){
-                        // next messages are just for debug
-                        //Serial.print("Command: ");
-                        //Serial.println(command_received);
+                        // Confirmation message when writing
+                        if(received_message.command){
+                            Serial.print("Writing ");
+                            Serial.print(received_message.value);
+                            Serial.print(" in channel ");
+                            Serial.println(received_message.channel + 1);
+                        }
                     }
                 }else{
                     Serial.print("The command received (");
@@ -81,7 +85,7 @@ void task_txrx_serial(void *pvParameters){
         {
             if ( xSemaphoreTake( x_serial_txrx_semaphore, SEMAPHORE_BLOCK_TIME ) == pdTRUE ){
                 Serial.print("Channel: ");
-                Serial.print(message_to_send.channel);
+                Serial.print(message_to_send.channel + 1);
 
                 Serial.print(", Value: ");
                 Serial.println(message_to_send.value);

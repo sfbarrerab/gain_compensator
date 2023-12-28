@@ -27,7 +27,7 @@ def create_tab1():
         [sg.Text("PID:"), sg.Radio("Disabled", "RADIO1", default=True , key="manual_option", enable_events=True), sg.Radio("Enabled", "RADIO1", key="automatic_option", enable_events=True)],
         [sg.Text("Operation:"), sg.Radio("Read", "RADIO2", key = "read_option", enable_events=True), sg.Radio("Write", "RADIO2",default=True, key="write_option", enable_events=True)],
         [sg.Text("Channel:"), sg.Combo([str(i) for i in range(1, 9)], key="channel_option_tab1", size=(5, 1))],
-        [sg.Text("Value:"), sg.InputText(key="value_to_write", size=(10, 1), do_not_clear=False)],
+        [sg.Text("Value:"), sg.Slider(range=(0,255), orientation='h', size=(20, 15), default_value=0, key="value_to_write")],
         [sg.Output(size=(60, 10))],  # Output element to display messages
         [sg.Button("Submit"), sg.Button("Exit")]
     ]
@@ -51,7 +51,7 @@ def transform_values_to_serial_command(values):
     command += values["channel_option_tab1"]
     command += "?"
 
-    command += values["value_to_write"]
+    command += str(int(values["value_to_write"]))
 
     return command
 
@@ -93,8 +93,10 @@ def create_secondary_window():
             arduino.write(bytes(command, 'utf-8'))
             time.sleep(0.5) 
             data = str(arduino.readline()).split('\'')[1].split('\\')[0]
-            print("Command received:")
-            print(data)
+            print("Response:")
+            print(data + "\n")
+        
+        window["value_to_write"].update(0)
 
     window.close()
 
