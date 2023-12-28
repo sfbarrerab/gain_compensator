@@ -2,6 +2,7 @@
 #include <Arduino_FreeRTOS.h>
 #include "serial_communication.h"
 #include "analog_read_write.h"
+#include "display.h"
 
 
 void setup() {
@@ -44,3 +45,4 @@ void loop() {
    // task already setup run the whole process
 
 }
+
