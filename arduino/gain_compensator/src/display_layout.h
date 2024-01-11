@@ -7,7 +7,7 @@
 #include <Arduino_FreeRTOS.h>
 #include "serial_communication.h"
 
-// The display also uses hardware SPI, plus #9 & #10
+// The display uses hardware SPI, plus #9 & #10
 #define TFT_CS 10
 #define TFT_DC 9
 // Size of the color selection boxes and the paintbrush size
