@@ -55,13 +55,13 @@ void task_display(void *pvParameters)
             p.y = map(p.y, 0, 320, 320, 0);
 
             // Print out the remapped (rotated) coordinates
-            if ( xSemaphoreTake( x_serial_txrx_semaphore, SEMAPHORE_BLOCK_TIME ) == pdTRUE ){
+            // if ( xSemaphoreTake( x_serial_txrx_semaphore, SEMAPHORE_BLOCK_TIME ) == pdTRUE ){
 
-                Serial.print("("); Serial.print(p.x);
-                Serial.print(", "); Serial.print(p.y);
-                Serial.println(")");
-                xSemaphoreGive( x_serial_txrx_semaphore );
-            }
+            //     Serial.print("("); Serial.print(p.x);
+            //     Serial.print(", "); Serial.print(p.y);
+            //     Serial.println(")");
+            //     xSemaphoreGive( x_serial_txrx_semaphore );
+            // }
 
             if (p.y < BOXSIZE) {
                 oldcolor = currentcolor;
