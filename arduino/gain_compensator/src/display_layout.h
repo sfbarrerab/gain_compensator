@@ -13,6 +13,6 @@
 // Size of the color selection boxes and the paintbrush size
 #define BOXSIZE 40
 #define PENRADIUS 3
-#define NONSENSE 10
+
 void init_tft();
 void task_display(void *pvParameters);
