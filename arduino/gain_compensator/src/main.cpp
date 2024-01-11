@@ -1,8 +1,10 @@
 #include <Arduino.h>
 #include <Arduino_FreeRTOS.h>
+#include <semphr.h>
+#include <queue.h>
 #include "serial_communication.h"
 #include "analog_read_write.h"
-#include "display.h"
+#include "display_layout.h"
 
 
 void setup() {
@@ -21,6 +23,8 @@ void setup() {
     x_messages_to_send_queue = xQueueCreate(QUEUE_LEN,sizeof(message_t)); 
     
     // Create task
+	init_tft();
+    
     xTaskCreate(
       task_txrx_serial
       ,  "Tx and Rx for serial communication"   // name
@@ -33,6 +37,14 @@ void setup() {
       task_analogue_read_write
       ,  "Analogue ports reading writing"   // name
       ,  128  // stack size
+      ,  NULL
+      ,  2  // Priority 
+      ,  NULL );
+
+	xTaskCreate(
+      task_display
+      ,  "Display layout and data collection"   // name
+      ,  4096  // stack size
       ,  NULL
       ,  2  // Priority 
       ,  NULL );

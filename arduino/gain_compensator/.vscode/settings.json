@@ -1,3 +1,10 @@
 {
-    "idf.portWin": "COM9"
+    "idf.portWin": "COM9",
+    "files.associations": {
+        "*.rmd": "markdown",
+        "nvs_wr.h": "c",
+        "adafruit_ft6206.h": "c",
+        "adafruit_ili9341.h": "c",
+        "wire.h": "c"
+    }
 }
