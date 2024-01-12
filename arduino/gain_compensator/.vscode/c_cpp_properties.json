@@ -9,6 +9,7 @@
             "name": "PlatformIO",
             "includePath": [
                 "c:/Users/yx30umaj/Documents/gain_compensator/arduino/gain_compensator/src",
+                "c:/Users/yx30umaj/Documents/gain_compensator/arduino/gain_compensator/.pio/libdeps/megaatmega2560/Adafruit TouchScreen",
                 "c:/Users/yx30umaj/Documents/gain_compensator/arduino/gain_compensator/.pio/libdeps/megaatmega2560/Adafruit FT6206 Library",
                 "c:/Users/yx30umaj/Documents/gain_compensator/arduino/gain_compensator/.pio/libdeps/megaatmega2560/Adafruit ILI9341",
                 "c:/Users/yx30umaj/Documents/gain_compensator/arduino/gain_compensator/.pio/libdeps/megaatmega2560/Adafruit GFX Library",
@@ -21,7 +22,6 @@
                 "c:/Users/yx30umaj/Documents/gain_compensator/arduino/gain_compensator/.pio/libdeps/megaatmega2560/Adafruit SH110X",
                 "c:/Users/yx30umaj/Documents/gain_compensator/arduino/gain_compensator/.pio/libdeps/megaatmega2560/Adafruit STMPE610",
                 "c:/Users/yx30umaj/Documents/gain_compensator/arduino/gain_compensator/.pio/libdeps/megaatmega2560/Adafruit TSC2007",
-                "c:/Users/yx30umaj/Documents/gain_compensator/arduino/gain_compensator/.pio/libdeps/megaatmega2560/Adafruit TouchScreen",
                 "C:/Users/yx30umaj/.platformio/packages/framework-arduino-avr/libraries/EEPROM/src",
                 "C:/Users/yx30umaj/.platformio/packages/framework-arduino-avr/libraries/HID/src",
                 "C:/Users/yx30umaj/.platformio/packages/framework-arduino-avr/libraries/SoftwareSerial/src",
@@ -31,6 +31,7 @@
                 "limitSymbolsToIncludedHeaders": true,
                 "path": [
                     "c:/Users/yx30umaj/Documents/gain_compensator/arduino/gain_compensator/src",
+                    "c:/Users/yx30umaj/Documents/gain_compensator/arduino/gain_compensator/.pio/libdeps/megaatmega2560/Adafruit TouchScreen",
                     "c:/Users/yx30umaj/Documents/gain_compensator/arduino/gain_compensator/.pio/libdeps/megaatmega2560/Adafruit FT6206 Library",
                     "c:/Users/yx30umaj/Documents/gain_compensator/arduino/gain_compensator/.pio/libdeps/megaatmega2560/Adafruit ILI9341",
                     "c:/Users/yx30umaj/Documents/gain_compensator/arduino/gain_compensator/.pio/libdeps/megaatmega2560/Adafruit GFX Library",
@@ -43,7 +44,6 @@
                     "c:/Users/yx30umaj/Documents/gain_compensator/arduino/gain_compensator/.pio/libdeps/megaatmega2560/Adafruit SH110X",
                     "c:/Users/yx30umaj/Documents/gain_compensator/arduino/gain_compensator/.pio/libdeps/megaatmega2560/Adafruit STMPE610",
                     "c:/Users/yx30umaj/Documents/gain_compensator/arduino/gain_compensator/.pio/libdeps/megaatmega2560/Adafruit TSC2007",
-                    "c:/Users/yx30umaj/Documents/gain_compensator/arduino/gain_compensator/.pio/libdeps/megaatmega2560/Adafruit TouchScreen",
                     "C:/Users/yx30umaj/.platformio/packages/framework-arduino-avr/libraries/EEPROM/src",
                     "C:/Users/yx30umaj/.platformio/packages/framework-arduino-avr/libraries/HID/src",
                     "C:/Users/yx30umaj/.platformio/packages/framework-arduino-avr/libraries/SoftwareSerial/src",

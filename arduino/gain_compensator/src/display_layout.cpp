@@ -49,10 +49,9 @@ void init_tft(){
     tft.fillScreen(ILI9341_BLACK);
     // origin = left,top landscape (USB left upper)
     tft.setRotation(1); 
-    Serial.println("tft began"); 
 
     redBtn();
-    Serial.println("red btn created");
+
 }
 
 
@@ -71,11 +70,6 @@ void task_display(void *pvParameters)
             p.x = map(p.x, 0, 240, 240, 0);
             p.y = map(p.y, 0, 320, 320, 0);
 
-            Serial.print("("); Serial.print(p.x);
-            Serial.print(", "); Serial.print(p.y);
-            Serial.println(")");
-
-
             int y = tft.height() - p.x;
             int x = p.y;
 
@@ -83,7 +77,6 @@ void task_display(void *pvParameters)
             {
                 if((x > REDBUTTON_X) && (x < (REDBUTTON_X + REDBUTTON_W))) {
                     if ((y > REDBUTTON_Y) && (y <= (REDBUTTON_Y + REDBUTTON_H))) {
-                    Serial.println("Red btn hit"); 
                     redBtn();
                     }
                 }
@@ -92,7 +85,6 @@ void task_display(void *pvParameters)
             {
                 if((x > GREENBUTTON_X) && (x < (GREENBUTTON_X + GREENBUTTON_W))) {
                     if ((y > GREENBUTTON_Y) && (y <= (GREENBUTTON_Y + GREENBUTTON_H))) {
-                    Serial.println("Green btn hit"); 
                     greenBtn();
                     }
                 }
