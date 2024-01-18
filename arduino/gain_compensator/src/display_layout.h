@@ -41,5 +41,5 @@
 #define GREENBUTTON_W (FRAME_W/2)
 #define GREENBUTTON_H FRAME_H
 
-void init_tft();
-void task_display(void *pvParameters);
+// void init_tft();
+// void task_display(void *pvParameters);

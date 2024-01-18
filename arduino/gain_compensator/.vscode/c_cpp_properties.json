@@ -51,7 +51,7 @@
                 ]
             },
             "defines": [
-                "PLATFORMIO=60112",
+                "PLATFORMIO=60113",
                 "ARDUINO_AVR_MEGA2560",
                 "portUSE_WDTO=WDTO_15MS",
                 "F_CPU=16000000L",
