@@ -6,5 +6,6 @@
         "adafruit_ft6206.h": "c",
         "adafruit_ili9341.h": "c",
         "wire.h": "c"
-    }
+    },
+    "r.lsp.promptToInstall": false
 }

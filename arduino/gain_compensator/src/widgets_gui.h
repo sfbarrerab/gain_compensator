@@ -7,57 +7,44 @@
 #include "serial_communication.h"
 #include <TouchScreen.h>
 
-
-#define FRAME_X 210
-#define FRAME_Y 180
-#define FRAME_W 100
-#define FRAME_H 50
-
-#define REDBUTTON_X FRAME_X
-#define REDBUTTON_Y FRAME_Y
-#define REDBUTTON_W (FRAME_W/2)
-#define REDBUTTON_H FRAME_H
-
-#define GREENBUTTON_X (REDBUTTON_X + REDBUTTON_W)
-#define GREENBUTTON_Y FRAME_Y
-#define GREENBUTTON_W (FRAME_W/2)
-#define GREENBUTTON_H FRAME_H
-
 class Widget {
 public:
   Widget(int x, int y, int width, int height);
 
-  virtual void onTouch() = 0;
-  virtual int getStatus() const = 0;
-  virtual void draw_widget(Adafruit_ILI9341 tft) const;
+  virtual int get_status() const = 0;
+  virtual void draw_widget(Adafruit_ILI9341 tft);
 
-  bool isDisabled() const;
-  void setDisabled(bool value);
+  bool is_disabled() const;
+  void set_disabled(bool value);
 
 protected:
   int x, y, width, height;
   bool disabled;
 };
 
+#define DEBOUNCE_TIME 50
 
 class Button : public Widget {
 public:
   Button(int x, int y, int width, int height, const char* label, void (*callback)());
 
-  void onTouch() override;
-  int getStatus() const override;
-  void draw_widget(Adafruit_ILI9341 tft) const override;
+  int get_status() const override;
+  void is_released(Adafruit_ILI9341 tft);
+  void is_pressed(Adafruit_ILI9341 tft);
+  void update_button_state(int x_touch, int y_touch, Adafruit_ILI9341 tft);
 
-  void setLabel(const char* label);
-  const char* getLabel() const;
+  void set_label(const char* label);
+  const char* get_label() const;
 
-  void setCallback(void (*callback)());
+  void set_callback(void (*callback)());
+
 
 private:
   const char* label;
   void (*callback)(); // Callback function pointer
   bool status;
   bool disabled;
+  unsigned long last_debounce_time;
 };
 
 
@@ -65,8 +52,7 @@ class Slider : public Widget {
 public:
   Slider(int x, int y, int width, int height, int minValue, int maxValue, int* value);
 
-  void onTouch() override;
-  int getStatus() const override;
+  int get_status() const override;
 
   void setValue(int newValue);
   int getValue() const;
@@ -81,8 +67,7 @@ class Checkbox : public Widget {
 public:
   Checkbox(int x, int y, int width, int height, bool* checked);
 
-  void onTouch() override;
-  int getStatus() const override;
+  int get_status() const override;
 
   bool isChecked() const;
 

@@ -6,8 +6,8 @@ Adafruit_ILI9341 tft = Adafruit_ILI9341(TFT_CS, TFT_DC);
 gui_mainpage_t mainpage;
 
 void init_mainpage(){
-    mainpage.myButton = new Button(10, 20, 50, 30, "ON", NULL);
-    mainpage.myButton->draw_widget(tft);
+	mainpage.my_button = new Button(200, 170, 90, 30, "Submit", NULL);
+	mainpage.my_button->is_released(tft);
 }
 
 
@@ -34,7 +34,9 @@ void task_display(void *pvParameters)
 
 	while (1)
 	{
-
+		int x,y;
+		x = 0;
+		y=0;
 		// Wait for a touch
 		if (ctp.touched())
 		{
@@ -45,20 +47,10 @@ void task_display(void *pvParameters)
 			p.x = map(p.x, 0, 240, 240, 0);
 			p.y = map(p.y, 0, 320, 320, 0);
 
-			int y = tft.height() - p.x;
-			int x = p.y;
-
-            if ((x > REDBUTTON_X) && (x < (REDBUTTON_X + REDBUTTON_W)))
-            {
-                if ((y > REDBUTTON_Y) && (y <= (REDBUTTON_Y + REDBUTTON_H)))
-                {
-                    mainpage.myButton->onTouch();
-                    mainpage.myButton->draw_widget(tft);
-                }
-            }
-			
+			y = tft.height() - p.x;
+			x = p.y;
 		}
-
-		vTaskDelay(10 / portTICK_PERIOD_MS);
+		mainpage.my_button->update_button_state(x,y,tft);
+		vTaskDelay(1 / portTICK_PERIOD_MS);
 	}
 }

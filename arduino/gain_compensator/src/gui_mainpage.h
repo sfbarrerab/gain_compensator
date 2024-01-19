@@ -9,9 +9,10 @@
 #define TFT_CS 10
 #define TFT_DC 9
 
+
 typedef struct gui_mainpage_t
 {
-    Button* myButton;
+    Button* my_button;
 }gui_mainpage_t;
 
 

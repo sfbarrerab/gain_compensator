@@ -1,18 +1,45 @@
 #include "widgets_gui.h"
 
+/*
+Library writen by Santiago Barrera
+
+This library is only fro being able to use Adafruit ILI9341 library to create
+some widgets in slow microcontrollers, like arduino uno or arduino mega, where 
+you cannot use LVGL for example.
+
+As it is limited to Adafruit library, some of the widgets are rough created, with
+hot pixel pushed parameters. So, be patient with it.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of
+this software and associated documentation files (the "Software"), to deal in
+the Software without restriction, including without limitation the rights to
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+the Software, and to permit persons to whom the Software is furnished to do so,
+subject to the following conditions:
+The above copyright notice and this permissionotice shall be included in all
+copies or substantial portions of the Software.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. InO EVENT SHALL THE AUTHORS OR
+COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+*/
+
+
 // **************** WIDGET CLASS *****************
 
 Widget::Widget(int x, int y, int width, int height) : x(x), y(y), width(width), height(height), disabled(false) {}
 
-bool Widget::isDisabled() const {
+bool Widget::is_disabled() const {
   return disabled;
 }
 
-void Widget::setDisabled(bool value) {
+void Widget::set_disabled(bool value) {
   disabled = value;
 }
 
-void Widget::draw_widget(Adafruit_ILI9341 tft) const{
+void Widget::draw_widget(Adafruit_ILI9341 tft){
 
 }
 
@@ -20,51 +47,68 @@ void Widget::draw_widget(Adafruit_ILI9341 tft) const{
 // **************** BUTTON CLASS *****************
 
 Button::Button(int x, int y, int width, int height, const char* label, void (*callback)())
-    : Widget(x, y, width, height), label(label), callback(callback), status(false), disabled(false) {}
+    : Widget(x, y, width, height), label(label), callback(callback), status(false), disabled(false),
+		 last_debounce_time(0) {}
 
-void Button::onTouch() {
-  if (!disabled) {
-		status = !status;
-		if (callback != nullptr) {
-			callback();
-		}
-  }
-}
-
-int Button::getStatus() const {
+int Button::get_status() const {
   return status ? 1 : 0;
 }
 
-void Button::setLabel(const char* newLabel) {
+void Button::set_label(const char* newLabel) {
   label = newLabel;
 }
 
-const char* Button::getLabel() const {
+const char* Button::get_label() const {
   return label;
 }
 
-void Button::setCallback(void (*cb)()) {
+void Button::set_callback(void (*cb)()) {
   callback = cb;
 }
 
-void Button::draw_widget(Adafruit_ILI9341 tft) const{
-	if(status){
-		tft.fillRect(REDBUTTON_X, REDBUTTON_Y, REDBUTTON_W, REDBUTTON_H, ILI9341_RED);
-		tft.fillRect(GREENBUTTON_X, GREENBUTTON_Y, GREENBUTTON_W, GREENBUTTON_H, ILI9341_BLUE);
-		tft.drawRect(FRAME_X, FRAME_Y, FRAME_W, FRAME_H, ILI9341_BLACK);
-		tft.setCursor(GREENBUTTON_X + 6, GREENBUTTON_Y + (GREENBUTTON_H / 2));
-		tft.setTextColor(ILI9341_WHITE);
-		tft.setTextSize(2);
-		tft.println("ON");
+void Button::is_released(Adafruit_ILI9341 tft){
+	tft.drawRect(x-1, y-1, width+2, height+2, ILI9341_BLACK);
+	tft.drawRect(x-2, y-2, width+4, height+4, ILI9341_BLACK);
+	tft.fillRect(x, y, width, height, ILI9341_BLUE);
+	tft.setCursor(x + 6, y + (height/4));
+	tft.setTextColor(ILI9341_WHITE);
+	tft.setTextSize(2);
+	tft.println(label);
+}
+
+void Button::is_pressed(Adafruit_ILI9341 tft){
+	tft.fillRect(x-2, y-2, width+4, height+4, ILI9341_BLUE);
+	tft.setCursor(x + 6, y + (height/4));
+	tft.setTextColor(ILI9341_WHITE);
+	tft.setTextSize(2);
+	tft.println(label);
+}
+
+void Button::update_button_state(int x_touch, int y_touch, Adafruit_ILI9341 tft){
+	
+	bool old_status = status;
+	if ((x_touch > x) && (x_touch < (x + width)) && (y_touch > y) && (y_touch <= (y + height)))
+	{
+		status = true;
 	}else{
-		tft.fillRect(GREENBUTTON_X, GREENBUTTON_Y, GREENBUTTON_W, GREENBUTTON_H, ILI9341_GREEN);
-		tft.fillRect(REDBUTTON_X, REDBUTTON_Y, REDBUTTON_W, REDBUTTON_H, ILI9341_BLUE);
-		tft.drawRect(FRAME_X, FRAME_Y, FRAME_W, FRAME_H, ILI9341_BLACK);
-		tft.setCursor(REDBUTTON_X + 6, REDBUTTON_Y + (REDBUTTON_H / 2));
-		tft.setTextColor(ILI9341_WHITE);
-		tft.setTextSize(2);
-		tft.println("OFF");
+		status = false;
 	}
+
+	if(old_status != status){
+		last_debounce_time = millis();
+	}
+
+	if ((millis() - last_debounce_time) < DEBOUNCE_TIME) {
+		if (status) {
+			this->is_pressed(tft);
+			if (callback != nullptr) {
+				callback();
+			}
+		} else {
+			this->is_released(tft);
+		}
+	}
+
 
 }
 
@@ -72,11 +116,8 @@ void Button::draw_widget(Adafruit_ILI9341 tft) const{
 Slider::Slider(int x, int y, int width, int height, int minValue, int maxValue, int* value)
     : Widget(x, y, width, height), minValue(minValue), maxValue(maxValue), value(value) {}
 
-void Slider::onTouch() {
-  // Implement code to handle slider touch
-}
 
-int Slider::getStatus() const {
+int Slider::get_status() const {
   return *value;
 }
 
@@ -94,12 +135,7 @@ int Slider::getValue() const {
 Checkbox::Checkbox(int x, int y, int width, int height, bool* checked)
     : Widget(x, y, width, height), checked(checked) {}
 
-void Checkbox::onTouch() {
-  // Implement code to handle checkbox touch
-  *checked = !(*checked);
-}
-
-int Checkbox::getStatus() const {
+int Checkbox::get_status() const {
   return *checked ? 1 : 0;
 }
 

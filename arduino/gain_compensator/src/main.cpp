@@ -4,7 +4,6 @@
 #include <queue.h>
 #include "serial_communication.h"
 #include "analog_read_write.h"
-#include "display_layout.h"
 #include "gui_mainpage.h"
 
 
