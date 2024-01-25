@@ -118,7 +118,7 @@ int Checkbox::get_status() const {
 void Checkbox::is_checked(Adafruit_ILI9341 tft) {
 	tft.drawCircle(x,y,radious,ILI9341_WHITE);
 	tft.fillCircle(x,y,radious-4,ILI9341_WHITE);
-	tft.setCursor(x + 2*radious+4, y-1);
+	tft.setCursor(x + 2*radious+3, y-1);
 	tft.setTextColor(ILI9341_WHITE);
 	tft.setTextSize(2);
 	tft.println(label);
@@ -126,13 +126,17 @@ void Checkbox::is_checked(Adafruit_ILI9341 tft) {
 
 
 void Checkbox::is_not_checked(Adafruit_ILI9341 tft) {
-	tft.fillCircle(x,y,radious,ILI9341_BLACK);
 	tft.drawCircle(x,y,radious,ILI9341_WHITE);
+	tft.fillCircle(x,y,radious-4,ILI9341_BLACK);
+	tft.setCursor(x + 2*radious+3, y-1);
+	tft.setTextColor(ILI9341_WHITE);
+	tft.setTextSize(2);
+	tft.println(label);
 }
 
 void Checkbox::update_state(int x_touch, int y_touch, Adafruit_ILI9341 tft){
 	
-	if ((x_touch > x) && (x_touch < (x + 2*radious)) && (y_touch > y) && (y_touch <= (y + 2*radious)))
+	if ((x_touch > (x - radious)) && (x_touch < (x + radious)) && (y_touch > (y - radious)) && (y_touch <= (y + radious)))
 	{
 		last_debounce_time = millis();
 	}else{

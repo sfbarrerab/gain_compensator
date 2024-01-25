@@ -14,6 +14,7 @@ typedef struct gui_mainpage_t
 {
     Button* submit_button;
     Checkbox* read_checkbox;
+    Checkbox* write_checkbox;
 }gui_mainpage_t;
 
 
