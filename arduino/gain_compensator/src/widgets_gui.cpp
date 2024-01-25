@@ -2,7 +2,10 @@
 
 // **************** WIDGET CLASS *****************
 
-Widget::Widget(int x, int y, int width, int height) : x(x), y(y), width(width), height(height), disabled(false) {}
+Widget::Widget(int x, int y, int width, int height,  const char* label) : x(x), y(y), width(width), label(label), height(height), disabled(false) {}
+
+// Constructor for the circular components (like checkbox)
+Widget::Widget(int x, int y, int radious, const char* label) : x(x), y(y), radious(radious), label(label), disabled(false) {}
 
 bool Widget::is_disabled() const {
   return disabled;
@@ -12,7 +15,7 @@ void Widget::set_disabled(bool value) {
   disabled = value;
 }
 
-void Widget::draw_widget(Adafruit_ILI9341 tft){
+void Widget::update_state(int x, int y, Adafruit_ILI9341 tft){
 
 }
 
@@ -20,7 +23,7 @@ void Widget::draw_widget(Adafruit_ILI9341 tft){
 // **************** BUTTON CLASS *****************
 
 Button::Button(int x, int y, int width, int height, const char* label, void (*callback)())
-    : Widget(x, y, width, height), label(label), callback(callback), status(false), disabled(false),
+    : Widget(x, y, width, height, label), callback(callback), status(false), disabled(false),
 		 last_debounce_time(0) {}
 
 int Button::get_status() const {
@@ -57,7 +60,7 @@ void Button::is_pressed(Adafruit_ILI9341 tft){
 	tft.println(label);
 }
 
-void Button::update_button_state(int x_touch, int y_touch, Adafruit_ILI9341 tft){
+void Button::update_state(int x_touch, int y_touch, Adafruit_ILI9341 tft){
 	
 	bool old_status = status;
 	if ((x_touch > x) && (x_touch < (x + width)) && (y_touch > y) && (y_touch <= (y + height)))
@@ -86,8 +89,8 @@ void Button::update_button_state(int x_touch, int y_touch, Adafruit_ILI9341 tft)
 }
 
 // **************** SLIDER CLASS *****************
-Slider::Slider(int x, int y, int width, int height, int minValue, int maxValue, int* value)
-    : Widget(x, y, width, height), minValue(minValue), maxValue(maxValue), value(value) {}
+Slider::Slider(int x, int y, int width, int height, int minValue, int maxValue, int* value, const char* label)
+    : Widget(x, y, width, height,label), minValue(minValue), maxValue(maxValue), value(value) {}
 
 
 int Slider::get_status() const {
@@ -105,13 +108,46 @@ int Slider::getValue() const {
 
 
 // **************** CHECKBOX CLASS *****************
-Checkbox::Checkbox(int x, int y, int width, int height, bool* checked)
-    : Widget(x, y, width, height), checked(checked) {}
+Checkbox::Checkbox(int x, int y, int radious, bool* checked, const char* label)
+    : Widget(x, y,radious, label), checked(checked), last_debounce_time(0), last_touch_processed(false) {}
 
 int Checkbox::get_status() const {
   return *checked ? 1 : 0;
 }
 
-bool Checkbox::isChecked() const {
-  return *checked;
+void Checkbox::is_checked(Adafruit_ILI9341 tft) {
+	tft.drawCircle(x,y,radious,ILI9341_WHITE);
+	tft.fillCircle(x,y,radious-4,ILI9341_WHITE);
+	tft.setCursor(x + 2*radious+4, y-1);
+	tft.setTextColor(ILI9341_WHITE);
+	tft.setTextSize(2);
+	tft.println(label);
+}
+
+
+void Checkbox::is_not_checked(Adafruit_ILI9341 tft) {
+	tft.fillCircle(x,y,radious,ILI9341_BLACK);
+	tft.drawCircle(x,y,radious,ILI9341_WHITE);
+}
+
+void Checkbox::update_state(int x_touch, int y_touch, Adafruit_ILI9341 tft){
+	
+	if ((x_touch > x) && (x_touch < (x + 2*radious)) && (y_touch > y) && (y_touch <= (y + 2*radious)))
+	{
+		last_debounce_time = millis();
+	}else{
+		last_touch_processed = false;
+	}
+
+	if ((millis() - last_debounce_time) < DEBOUNCE_TIME) {
+		if(!last_touch_processed){
+			*checked = !(*checked);
+			if(*checked){
+				this->is_checked(tft); 
+			}else{
+				this->is_not_checked(tft);
+			}		
+			last_touch_processed = true;
+		}
+	}
 }

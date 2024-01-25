@@ -2,12 +2,17 @@
 
 Adafruit_FT6206 ctp = Adafruit_FT6206();
 Adafruit_ILI9341 tft = Adafruit_ILI9341(TFT_CS, TFT_DC);
+bool read_function_checkbox = true;
+
 
 gui_mainpage_t mainpage;
 
 void init_mainpage(){
-	mainpage.my_button = new Button(200, 170, 90, 30, "Submit", NULL);
-	mainpage.my_button->is_released(tft);
+	mainpage.submit_button = new Button(200, 170, 90, 30, "Submit", NULL);
+	mainpage.submit_button->is_released(tft);
+
+	mainpage.read_checkbox = new Checkbox(100,100,20,&read_function_checkbox,"Read");
+	mainpage.read_checkbox->is_checked(tft);
 }
 
 
@@ -50,7 +55,8 @@ void task_display(void *pvParameters)
 			y = tft.height() - p.x;
 			x = p.y;
 		}
-		mainpage.my_button->update_button_state(x,y,tft);
+		mainpage.submit_button->update_state(x,y,tft);
+		mainpage.read_checkbox->update_state(x,y,tft);
 		vTaskDelay(1 / portTICK_PERIOD_MS);
 	}
 }
