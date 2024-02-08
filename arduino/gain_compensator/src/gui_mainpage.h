@@ -16,6 +16,7 @@ typedef struct gui_mainpage_t
     Checkbox* read_checkbox;
     Checkbox* write_checkbox;
     Slider* value_slider;
+    Slider* channel_slider;
 }gui_mainpage_t;
 
 

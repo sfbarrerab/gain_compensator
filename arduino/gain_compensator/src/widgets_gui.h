@@ -35,6 +35,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include "serial_communication.h"
 #include <TouchScreen.h>
 
+
 class Widget {
 public:
   Widget(int x, int y, int width, int height, const char* label);
@@ -85,7 +86,7 @@ public:
 
   void setValue(int newValue);
   int getValue() const;
-  int Slider::update_slider_value(int x_touched);
+  void Slider::update_slider_value(int x_touched);
   int Slider::value_to_x_position(int val);
   void Slider::init_slider(Adafruit_ILI9341 tft);
   void Slider::draw_slider(Adafruit_ILI9341 tft);

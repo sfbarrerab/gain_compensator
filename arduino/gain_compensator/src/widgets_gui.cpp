@@ -90,7 +90,7 @@ void Button::update_state(int x_touch, int y_touch, Adafruit_ILI9341 tft){
 
 // **************** SLIDER CLASS *****************
 Slider::Slider(int x, int y, int width, int height, int min_value, int max_value, int* value, const char* label, int r_slider)
-    : Widget(x, y, width, height,label), min_value(min_value), max_value(max_value), value(0), r_slider(r_slider) {}
+    : Widget(x, y, width, height,label), min_value(min_value), max_value(max_value), value(value), r_slider(r_slider) {}
 
 
 int Slider::get_status() const {
@@ -105,15 +105,21 @@ int Slider::getValue() const {
   return *value;
 }
 
-int Slider::update_slider_value(int x_touched){
-	double step = width/(max_value-min_value);
-	*value = int((x_touched-x)/step);
-	return *value;
+void Slider::update_slider_value(int x_touched){
+	double step = double(width)/double(max_value-min_value);
+	*value = int(double(x_touched-x)/step)+min_value;
+	if(*value < min_value){
+		*value = min_value;
+	}
+
+	if(*value > max_value){
+		*value = max_value;
+	}
 }
 
 int Slider::value_to_x_position(int val){
-	double step = width/(max_value-min_value);
-	int x_position = (val*step)+x;
+	double step = double(width)/double(max_value-min_value);
+	int x_position = (double(val-min_value)*step)+x;
 	return x_position;
 }
 
@@ -128,13 +134,22 @@ void Slider::init_slider(Adafruit_ILI9341 tft){
 }
 
 void Slider::draw_slider(Adafruit_ILI9341 tft){
+	char buffer[10];
+	sprintf(buffer, "%d", *value);
+	tft.fillRect(x-r_slider,y-r_slider,width+2*r_slider+5,2*r_slider+5,ILI9341_BLACK);
 	tft.fillRect(x,y,width,height,ILI9341_BLUE);
 	tft.fillCircle(value_to_x_position(*value),y+(height/2),r_slider,ILI9341_BLUE);
+	tft.fillRect(x+90,y-2*r_slider-2,60,16,ILI9341_BLACK);
+	tft.setCursor(x+100, y-2*r_slider-2);
+	tft.setTextColor(ILI9341_WHITE);
+	tft.setTextSize(2);
+	tft.println(buffer);
 }
 
 void Slider::update_state(int x_touch, int y_touch, Adafruit_ILI9341 tft){
-	if ((x_touch > (x - r_slider)) && (x_touch < (x + r_slider)) && (y_touch > (y - r_slider)) && (y_touch <= (y + r_slider))){
+	if ((x_touch >= x) && (x_touch <= (x + width+r_slider)) && (y_touch > (y - r_slider)) && (y_touch <= (y + r_slider))){
 		this->draw_slider(tft);
+		this->update_slider_value(x_touch);
 	}
 }
 
