@@ -15,6 +15,7 @@ typedef struct gui_mainpage_t
     Button* submit_button;
     Checkbox* read_checkbox;
     Checkbox* write_checkbox;
+    Slider* value_slider;
 }gui_mainpage_t;
 
 

@@ -79,15 +79,21 @@ private:
 
 class Slider : public Widget {
 public:
-  Slider(int x, int y, int width, int height, int minValue, int maxValue, int* value, const char* label);
+  Slider(int x, int y, int width, int height, int min_value, int max_value, int* value, const char* label,int r_slider);
 
   int get_status() const override;
 
   void setValue(int newValue);
   int getValue() const;
+  int Slider::update_slider_value(int x_touched);
+  int Slider::value_to_x_position(int val);
+  void Slider::init_slider(Adafruit_ILI9341 tft);
+  void Slider::draw_slider(Adafruit_ILI9341 tft);
+  void Slider::update_state(int x_touch, int y_touch, Adafruit_ILI9341 tft);
+ 
 
 private:
-  int minValue, maxValue;
+  int min_value, max_value, r_slider;
   int* value;
 };
 

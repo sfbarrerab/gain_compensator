@@ -89,8 +89,8 @@ void Button::update_state(int x_touch, int y_touch, Adafruit_ILI9341 tft){
 }
 
 // **************** SLIDER CLASS *****************
-Slider::Slider(int x, int y, int width, int height, int minValue, int maxValue, int* value, const char* label)
-    : Widget(x, y, width, height,label), minValue(minValue), maxValue(maxValue), value(value) {}
+Slider::Slider(int x, int y, int width, int height, int min_value, int max_value, int* value, const char* label, int r_slider)
+    : Widget(x, y, width, height,label), min_value(min_value), max_value(max_value), value(0), r_slider(r_slider) {}
 
 
 int Slider::get_status() const {
@@ -105,6 +105,38 @@ int Slider::getValue() const {
   return *value;
 }
 
+int Slider::update_slider_value(int x_touched){
+	double step = width/(max_value-min_value);
+	*value = int((x_touched-x)/step);
+	return *value;
+}
+
+int Slider::value_to_x_position(int val){
+	double step = width/(max_value-min_value);
+	int x_position = (val*step)+x;
+	return x_position;
+}
+
+void Slider::init_slider(Adafruit_ILI9341 tft){
+	tft.fillRect(x,y,width,height,ILI9341_BLUE);
+	tft.fillCircle(x,y+(height/2),r_slider,ILI9341_BLUE);
+	tft.setCursor(x-r_slider, y-2*r_slider);
+	tft.setTextColor(ILI9341_WHITE);
+	tft.setTextSize(2);
+	tft.println(label);
+
+}
+
+void Slider::draw_slider(Adafruit_ILI9341 tft){
+	tft.fillRect(x,y,width,height,ILI9341_BLUE);
+	tft.fillCircle(value_to_x_position(*value),y+(height/2),r_slider,ILI9341_BLUE);
+}
+
+void Slider::update_state(int x_touch, int y_touch, Adafruit_ILI9341 tft){
+	if ((x_touch > (x - r_slider)) && (x_touch < (x + r_slider)) && (y_touch > (y - r_slider)) && (y_touch <= (y + r_slider))){
+		this->draw_slider(tft);
+	}
+}
 
 
 // **************** CHECKBOX CLASS *****************
