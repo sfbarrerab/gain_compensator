@@ -26,7 +26,7 @@ Button::Button(int x, int y, int width, int height, const char* label, void (*ca
     : Widget(x, y, width, height, label), callback(callback), status(false), disabled(false),
 		 last_debounce_time(0) {}
 
-int Button::get_status() const {
+int Button::get_value() const {
   return status ? 1 : 0;
 }
 
@@ -92,16 +92,7 @@ void Button::update_state(int x_touch, int y_touch, Adafruit_ILI9341 tft){
 Slider::Slider(int x, int y, int width, int height, int min_value, int max_value, int* value, const char* label, int r_slider)
     : Widget(x, y, width, height,label), min_value(min_value), max_value(max_value), value(value), r_slider(r_slider) {}
 
-
-int Slider::get_status() const {
-  return *value;
-}
-
-void Slider::setValue(int newValue) {
-  // Implement code to set the value within the valid range
-}
-
-int Slider::getValue() const {
+int Slider::get_value() const {
   return *value;
 }
 
@@ -158,7 +149,7 @@ void Slider::update_state(int x_touch, int y_touch, Adafruit_ILI9341 tft){
 Checkbox::Checkbox(int x, int y, int radious, bool* checked, const char* label)
     : Widget(x, y,radious, label), checked(checked), last_debounce_time(0), last_touch_processed(false) {}
 
-int Checkbox::get_status() const {
+int Checkbox::get_value() const {
   return *checked ? 1 : 0;
 }
 
