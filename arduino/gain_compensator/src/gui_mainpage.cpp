@@ -71,6 +71,7 @@ void task_display(void *pvParameters)
 		mainpage.write_checkbox->update_state(x,y,tft);
 		mainpage.value_slider->update_state(x,y,tft);
 		mainpage.channel_slider->update_state(x,y,tft);
+
 		vTaskDelay(1/ portTICK_PERIOD_MS);
 	}
 }

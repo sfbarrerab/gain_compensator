@@ -23,12 +23,8 @@ void Widget::update_state(int x, int y, Adafruit_ILI9341 tft){
 // **************** BUTTON CLASS *****************
 
 Button::Button(int x, int y, int width, int height, const char* label, void (*callback)())
-    : Widget(x, y, width, height, label), callback(callback), status(false), disabled(false),
-		 last_debounce_time(0) {}
+    : Widget(x, y, width, height, label), callback(callback), last_debounce_time(0), last_touch_processed(false) {}
 
-int Button::get_value() const {
-  return status ? 1 : 0;
-}
 
 void Button::set_label(const char* newLabel) {
   label = newLabel;
@@ -62,20 +58,20 @@ void Button::is_pressed(Adafruit_ILI9341 tft){
 
 void Button::update_state(int x_touch, int y_touch, Adafruit_ILI9341 tft){
 	
-	bool old_status = status;
+	bool old_status = last_touch_processed;
 	if ((x_touch > x) && (x_touch < (x + width)) && (y_touch > y) && (y_touch <= (y + height)))
 	{
-		status = true;
+		last_touch_processed = true;
 	}else{
-		status = false;
+		last_touch_processed = false;
 	}
 
-	if(old_status != status){
+	if(old_status != last_touch_processed){
 		last_debounce_time = millis();
 	}
 
 	if ((millis() - last_debounce_time) < DEBOUNCE_TIME) {
-		if (status) {
+		if (last_touch_processed) {
 			this->is_pressed(tft);
 			if (callback != nullptr) {
 				callback();
@@ -91,10 +87,6 @@ void Button::update_state(int x_touch, int y_touch, Adafruit_ILI9341 tft){
 // **************** SLIDER CLASS *****************
 Slider::Slider(int x, int y, int width, int height, int min_value, int max_value, int* value, const char* label, int r_slider)
     : Widget(x, y, width, height,label), min_value(min_value), max_value(max_value), value(value), r_slider(r_slider) {}
-
-int Slider::get_value() const {
-  return *value;
-}
 
 void Slider::update_slider_value(int x_touched){
 	double step = double(width)/double(max_value-min_value);
@@ -138,9 +130,11 @@ void Slider::draw_slider(Adafruit_ILI9341 tft){
 }
 
 void Slider::update_state(int x_touch, int y_touch, Adafruit_ILI9341 tft){
-	if ((x_touch >= x) && (x_touch <= (x + width+r_slider)) && (y_touch > (y - r_slider)) && (y_touch <= (y + r_slider))){
-		this->draw_slider(tft);
-		this->update_slider_value(x_touch);
+	if (!disabled){
+		if ((x_touch >= x-r_slider) && (x_touch <= (x + width+r_slider)) && (y_touch > (y - r_slider)) && (y_touch <= (y + r_slider))){
+			this->draw_slider(tft);
+			this->update_slider_value(x_touch);
+		}
 	}
 }
 
@@ -148,10 +142,6 @@ void Slider::update_state(int x_touch, int y_touch, Adafruit_ILI9341 tft){
 // **************** CHECKBOX CLASS *****************
 Checkbox::Checkbox(int x, int y, int radious, bool* checked, const char* label)
     : Widget(x, y,radious, label), checked(checked), last_debounce_time(0), last_touch_processed(false) {}
-
-int Checkbox::get_value() const {
-  return *checked ? 1 : 0;
-}
 
 void Checkbox::is_checked(Adafruit_ILI9341 tft) {
 	tft.drawCircle(x,y,radious,ILI9341_WHITE);
@@ -173,14 +163,14 @@ void Checkbox::is_not_checked(Adafruit_ILI9341 tft) {
 }
 
 void Checkbox::update_state(int x_touch, int y_touch, Adafruit_ILI9341 tft){
-	
-	if ((x_touch > (x - radious)) && (x_touch < (x + radious)) && (y_touch > (y - radious)) && (y_touch <= (y + radious)))
-	{
-		last_debounce_time = millis();
-	}else{
-		last_touch_processed = false;
+	if(!disabled){
+		if ((x_touch > (x - radious)) && (x_touch < (x + radious)) && (y_touch > (y - radious)) && (y_touch <= (y + radious)))
+		{
+			last_debounce_time = millis();
+		}else{
+			last_touch_processed = false;
+		}
 	}
-
 	if ((millis() - last_debounce_time) < DEBOUNCE_TIME) {
 		if(!last_touch_processed){
 			*checked = !(*checked);

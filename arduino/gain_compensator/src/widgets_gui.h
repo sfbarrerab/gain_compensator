@@ -41,9 +41,7 @@ public:
   Widget(int x, int y, int width, int height, const char* label);
   Widget(int x, int y, int radious, const char* label);
 
-  virtual int get_value() const = 0;
   virtual void update_state(int x_touch, int y_touch, Adafruit_ILI9341 tft);
-
   bool is_disabled() const;
   void set_disabled(bool value);
 
@@ -58,8 +56,6 @@ protected:
 class Button : public Widget {
 public:
   Button(int x, int y, int width, int height, const char* label, void (*callback)());
-
-  int get_value() const override;
   void is_released(Adafruit_ILI9341 tft);
   void is_pressed(Adafruit_ILI9341 tft);
   void update_state(int x_touch, int y_touch, Adafruit_ILI9341 tft) override;
@@ -72,9 +68,8 @@ public:
 
 private:
   void (*callback)(); // Callback function pointer
-  bool status;
-  bool disabled;
   unsigned long last_debounce_time;
+  bool last_touch_processed;
 };
 
 
@@ -82,7 +77,6 @@ class Slider : public Widget {
 public:
   Slider(int x, int y, int width, int height, int min_value, int max_value, int* value, const char* label,int r_slider);
   
-  int get_value() const override;
   void update_slider_value(int x_touched);
   int value_to_x_position(int val);
   void init_slider(Adafruit_ILI9341 tft);
@@ -98,8 +92,6 @@ private:
 class Checkbox : public Widget {
 public:
   Checkbox(int x, int y, int radious, bool* checked, const char* label);
-
-  int get_value() const override;
 
   void is_checked(Adafruit_ILI9341 tft);
   void is_not_checked(Adafruit_ILI9341 tft);
