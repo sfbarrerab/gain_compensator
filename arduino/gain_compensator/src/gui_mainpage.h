@@ -2,6 +2,7 @@
 #include "widgets_gui.h"
 #include "gui_popup.h"
 #include "touch_screen.h"
+#include "screen_displayed.h"
 
 #define TFT_CS 10
 #define TFT_DC 9
@@ -16,8 +17,6 @@ typedef struct gui_mainpage_t
     Button* submit_button;
 }gui_mainpage_t;
 
-extern Adafruit_ILI9341 tft;
-
-void init_tft();
 void init_mainpage();
-void task_display(void *pvParameters);
+void delete_main_page();
+void update_gui_mainpage();

@@ -6,6 +6,7 @@
 #include "analog_read_write.h"
 #include "gui_mainpage.h"
 #include "touch_screen.h"
+#include "screen_displayed.h"
 
 
 void setup() {
@@ -55,7 +56,7 @@ void setup() {
     ,  NULL );
 
 	xTaskCreate(
-    task_display
+    task_print_display
     ,  "Display layout and data collection"   // name
     ,  4096  // stack size
     ,  NULL

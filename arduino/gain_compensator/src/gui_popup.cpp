@@ -2,23 +2,20 @@
 
 confirmation_popup_t submit_popup_layout;
 
-void submit_popup(){
-  int x = 70;
-  int y = 50;
-  int width = 220;
-  int height = 150;
+void init_submit_popup(){
+  current_screen = POPUP;
+  tft.drawRect(POPUP_X0-1, POPUP_Y0-1, POPUP_WIDTH+2, POPUP_HEIGHT+2, ILI9341_BLUE);
+  tft.drawRect(POPUP_X0-2, POPUP_Y0-2, POPUP_WIDTH+4, POPUP_HEIGHT+4, ILI9341_BLUE);
+	tft.fillRect(POPUP_X0, POPUP_Y0, POPUP_WIDTH, POPUP_HEIGHT, ILI9341_BLACK);
 
-  tft.drawRect(x-1, y-1, width+2, height+2, ILI9341_BLUE);
-  tft.drawRect(x-2, y-2, width+4, height+4, ILI9341_BLUE);
-	tft.fillRect(x, y, width, height, ILI9341_BLACK);
- 
   submit_popup_layout.close_button = new Button(120, 190, 70, 30, "Close", init_mainpage, NULL);
 	submit_popup_layout.close_button->is_released(tft);
-
-  // bloqueando ando...
-  while(1){
-    submit_popup_layout.close_button->update_state(x,y,tft);
-    vTaskDelay((DEBOUNCE_TIME/4)/ portTICK_PERIOD_MS);
-  }
 }
 
+void update_popup(){
+  submit_popup_layout.close_button->update_state(x,y,tft);
+}
+
+void delete_submit_popup(){
+  delete submit_popup_layout.close_button;
+}

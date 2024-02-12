@@ -3,8 +3,6 @@
 // ********************************************************
 // GLOBAL VARIABLES DEFINITION
 
-Adafruit_ILI9341 tft = Adafruit_ILI9341(TFT_CS, TFT_DC);
-
 bool read_radiobox_value;
 bool write_radiobox_value;
 bool pid_radiobox_value;
@@ -23,7 +21,9 @@ gui_mainpage_t mainpage;
 // **********************************************************
 
 void init_mainpage(){
-
+	
+	current_screen = MAIN_PAGE;
+	tft.fillScreen(ILI9341_BLACK);
 
 	mainpage.read_radiobox = new Radio(40,40,15,&read_radiobox_value,"Read", &gui_change_triggered);
 	mainpage.read_radiobox->is_not_selected(tft);
@@ -40,17 +40,8 @@ void init_mainpage(){
 	mainpage.value_slider = new Slider(40,160,250,5,0,100,&val_slider,"Value:", 15, &gui_change_triggered);
 	mainpage.value_slider->init_slider(tft);
 
-	mainpage.submit_button = new Button(210, 190, 90, 30, "Submit", submit_popup, &gui_change_triggered);
+	mainpage.submit_button = new Button(210, 190, 90, 30, "Submit", init_submit_popup, &gui_change_triggered);
 	mainpage.submit_button->is_released(tft);
-}
-
-
-void init_tft()
-{
-	tft.begin();
-	tft.fillScreen(ILI9341_BLACK);
-	// origin in left-top landscape
-	tft.setRotation(1);
 }
 
 void handle_radioboxes(){
@@ -86,11 +77,11 @@ void handle_radioboxes(){
 
 }
 
-void task_display(void *pvParameters)
+void update_gui_mainpage()
 {
 
-	while (1)
-	{
+	// while (1)
+	// {
 
 		// store current values of the radioboxes
 		old_state_read_radiobox = read_radiobox_value;
@@ -107,6 +98,15 @@ void task_display(void *pvParameters)
 		// Disable value slider according to radioboxes options
 		handle_radioboxes();
 
-		vTaskDelay((DEBOUNCE_TIME/4)/ portTICK_PERIOD_MS);
-	}
+	// 	vTaskDelay((DEBOUNCE_TIME/4)/ portTICK_PERIOD_MS);
+	// }
+}
+
+void delete_main_page(){
+		delete mainpage.read_radiobox;
+		delete mainpage.write_radiobox;
+		delete mainpage.pid_radiobox;
+		delete mainpage.value_slider;
+		delete mainpage.channel_slider;
+		delete mainpage.submit_button;
 }
