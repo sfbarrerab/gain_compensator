@@ -4,7 +4,7 @@
 
 Widget::Widget(int x, int y, int width, int height, const char* label, bool* gui_change_triggered) : x(x), y(y), width(width), height(height), label(label), gui_change_triggered(gui_change_triggered), disabled(false) {}
 
-// Constructor for the circular components (like checkbox)
+// Constructor for the circular components (like radiobox)
 Widget::Widget(int x, int y, int radious, const char* label, bool* gui_change_triggered) : x(x), y(y), radious(radious), label(label), gui_change_triggered(gui_change_triggered), disabled(false){}
 
 bool Widget::is_disabled() const {
@@ -148,34 +148,34 @@ void Slider::update_state(int x_touch, int y_touch, Adafruit_ILI9341 tft){
 }
 
 
-// **************** CHECKBOX CLASS *****************
-Checkbox::Checkbox(int x, int y, int radious, bool* checked, const char* label, bool* gui_change_triggered)
-    : Widget(x, y, radious, label, gui_change_triggered), checked(checked), last_debounce_time(0), last_touch_processed(false) {}
+// **************** radiobox CLASS *****************
+Radio::Radio(int x, int y, int radious, bool* selected, const char* label, bool* gui_change_triggered)
+    : Widget(x, y, radious, label, gui_change_triggered), selected(selected), last_debounce_time(0), last_touch_processed(false) {}
 
-void Checkbox::is_checked(Adafruit_ILI9341 tft) {
-	*checked = true;
+void Radio::is_selected(Adafruit_ILI9341 tft) {
+	*selected = true;
 	tft.drawCircle(x,y,radious,ILI9341_WHITE);
 	tft.fillCircle(x,y,radious-4,ILI9341_WHITE);
-	tft.setCursor(x + 2*radious+3, y-1);
+	tft.setCursor(x + radious + 5, y-(radious/2));
 	tft.setTextColor(ILI9341_WHITE);
 	tft.setTextSize(2);
 	tft.println(label);
 }
 
 
-void Checkbox::is_not_checked(Adafruit_ILI9341 tft) {
-	*checked = false;
+void Radio::is_not_selected(Adafruit_ILI9341 tft) {
+	*selected = false;
 	tft.drawCircle(x,y,radious,ILI9341_WHITE);
 	tft.fillCircle(x,y,radious-4,ILI9341_BLACK);
-	tft.setCursor(x + 2*radious+3, y-1);
+	tft.setCursor(x + radious + 5, y-(radious/2));
 	tft.setTextColor(ILI9341_WHITE);
 	tft.setTextSize(2);
 	tft.println(label);
 }
 
-void Checkbox::update_state(int x_touch, int y_touch, Adafruit_ILI9341 tft){
+void Radio::update_state(int x_touch, int y_touch, Adafruit_ILI9341 tft){
 	if(!disabled){
-		if (((x_touch > (x - radious)) && (x_touch < (x + radious)) && (y_touch > (y - radious)) && (y_touch <= (y + radious))) || *gui_change_triggered)
+		if (((x_touch > (x - radious)) && (x_touch < (x + radious)) && (y_touch > (y - radious)) && (y_touch <= (y + radious))))
 		{
 			last_debounce_time = millis();
 		}else{
@@ -184,13 +184,22 @@ void Checkbox::update_state(int x_touch, int y_touch, Adafruit_ILI9341 tft){
 	}
 	if ((millis() - last_debounce_time) < DEBOUNCE_TIME) {
 		if(!last_touch_processed){
-			*checked = !(*checked);
-			if(*checked){
-				this->is_checked(tft); 
+			*selected = true;//!(*selected);  -> Use this instead if you want to change the value of the
+											// radiobox each time the widget is pressed. However,
+											// I recomend to create another widget for checkboxes
+			if(*selected){
+				this->is_selected(tft); 
 			}else{
-				this->is_not_checked(tft);
+				this->is_not_selected(tft);
 			}		
 			last_touch_processed = true;
 		}
+	}
+	else if(*gui_change_triggered){		// the change is due to a trigger and not that the widget was touched
+		if(*selected){
+			this->is_selected(tft); 
+		}else{
+			this->is_not_selected(tft);
+		}	
 	}
 }

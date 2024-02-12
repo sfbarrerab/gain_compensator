@@ -90,17 +90,17 @@ private:
 };
 
 
-class Checkbox : public Widget {
+class Radio : public Widget {
 public:
-  Checkbox(int x, int y, int radious, bool* checked, const char* label, bool* gui_change_triggered);
+  Radio(int x, int y, int radious, bool* selected, const char* label, bool* gui_change_triggered);
 
-  void is_checked(Adafruit_ILI9341 tft);
-  void is_not_checked(Adafruit_ILI9341 tft);
+  void is_selected(Adafruit_ILI9341 tft);
+  void is_not_selected(Adafruit_ILI9341 tft);
   void update_state(int x_touch, int y_touch, Adafruit_ILI9341 tft) override;
 
 
 private:
-  bool* checked;
+  bool* selected;
   unsigned long last_debounce_time;
   bool last_touch_processed;
 };

@@ -12,11 +12,12 @@
 
 typedef struct gui_mainpage_t
 {
-    Button* submit_button;
-    Checkbox* read_checkbox;
-    Checkbox* write_checkbox;
+    Radio* read_radiobox;
+    Radio* write_radiobox;
+    Radio* pid_radiobox;
     Slider* channel_slider;
     Slider* value_slider;
+    Button* submit_button;
 }gui_mainpage_t;
 
 
