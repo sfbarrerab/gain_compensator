@@ -1,5 +1,8 @@
 #include "gui_mainpage.h"
 
+// ********************************************************
+// GLOBAL VARIABLES DEFINITION
+
 Adafruit_FT6206 ctp = Adafruit_FT6206();
 Adafruit_ILI9341 tft = Adafruit_ILI9341(TFT_CS, TFT_DC);
 bool read_radiobox_value;
@@ -17,6 +20,8 @@ bool gui_change_triggered = false;
 
 gui_mainpage_t mainpage;
 
+// **********************************************************
+
 void init_mainpage(){
 	mainpage.read_radiobox = new Radio(40,40,15,&read_radiobox_value,"Read", &gui_change_triggered);
 	mainpage.read_radiobox->is_not_selected(tft);
@@ -33,7 +38,7 @@ void init_mainpage(){
 	mainpage.value_slider = new Slider(40,160,250,5,0,100,&val_slider,"Value:", 15, &gui_change_triggered);
 	mainpage.value_slider->init_slider(tft);
 
-	mainpage.submit_button = new Button(210, 190, 90, 30, "Submit", NULL, &gui_change_triggered);
+	mainpage.submit_button = new Button(210, 190, 90, 30, "Submit", submit_popup, &gui_change_triggered);
 	mainpage.submit_button->is_released(tft);
 }
 
@@ -95,7 +100,7 @@ void task_display(void *pvParameters)
 	while (1)
 	{
 
-		// store current values of the radioboxes (can disable widget components)
+		// store current values of the radioboxes
 		old_state_read_radiobox = read_radiobox_value;
 		old_state_write_radiobox = write_radiobox_value;
 		old_state_pid_radiobox = pid_radiobox_value;
@@ -125,7 +130,7 @@ void task_display(void *pvParameters)
 
 		// Disable value slider according to radioboxes options
 		handle_radioboxes();
-		
-		vTaskDelay(5/ portTICK_PERIOD_MS);
+
+		vTaskDelay((DEBOUNCE_TIME/4)/ portTICK_PERIOD_MS);
 	}
 }

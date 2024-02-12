@@ -25,7 +25,6 @@ IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-
 #include <Adafruit_GFX.h>    // Core graphics library
 #include <SPI.h>       // this is needed for display
 #include <Adafruit_ILI9341.h>
@@ -36,7 +35,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include <TouchScreen.h>
 
 
-#define DEBOUNCE_TIME 50
+#define DEBOUNCE_TIME 20
 
 class Widget {
 public:
