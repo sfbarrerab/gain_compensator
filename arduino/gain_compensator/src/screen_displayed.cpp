@@ -26,17 +26,16 @@ void task_print_display(void *pvParameters)
       case MAIN_PAGE:
         Serial.println("Borre la tarea del mainpage");
         delete_main_page();
-        page_initialized = 0;
         break;
       case POPUP:
         Serial.println("Borre la tarea del popup");
         delete_submit_popup();
-        page_initialized = 0;
         break;
       default:
         break;
       }
       old_screen = current_screen;
+      page_initialized = 0;
     }
 
     switch (current_screen)
