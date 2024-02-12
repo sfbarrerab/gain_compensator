@@ -5,6 +5,11 @@ Adafruit_ILI9341 tft = Adafruit_ILI9341(TFT_CS, TFT_DC);
 bool read_radiobox_value;
 bool write_radiobox_value;
 bool pid_radiobox_value;
+
+bool old_state_read_radiobox;
+bool old_state_write_radiobox;
+bool old_state_pid_radiobox;
+
 int val_slider;
 int channel_slider;
 
@@ -51,6 +56,39 @@ void init_tft()
 	init_mainpage();
 }
 
+void handle_radioboxes(){
+	if(read_radiobox_value != old_state_read_radiobox){
+		if(read_radiobox_value){
+			write_radiobox_value = false;
+			pid_radiobox_value  = false;
+			mainpage.value_slider->set_disabled(true);
+			mainpage.channel_slider->set_disabled(false);
+		}
+		gui_change_triggered = true;
+
+	}else if(write_radiobox_value != old_state_write_radiobox){
+		if(write_radiobox_value){
+			read_radiobox_value = false;
+			pid_radiobox_value = false;
+			mainpage.value_slider->set_disabled(false);
+			mainpage.channel_slider->set_disabled(false);
+		}
+		gui_change_triggered = true;
+
+	}else if(pid_radiobox_value != old_state_pid_radiobox){
+		if(pid_radiobox_value){
+			write_radiobox_value = false;
+			read_radiobox_value = false;
+			mainpage.value_slider->set_disabled(true);
+			mainpage.channel_slider->set_disabled(true);
+		}
+		gui_change_triggered = true;
+	}else{
+		gui_change_triggered = false;
+	}
+
+}
+
 void task_display(void *pvParameters)
 {
 
@@ -58,9 +96,9 @@ void task_display(void *pvParameters)
 	{
 
 		// store current values of the radioboxes (can disable widget components)
-		bool old_state_read_radiobox = read_radiobox_value;
-		bool old_state_write_radiobox = write_radiobox_value;
-		bool old_state_pid_radiobox = pid_radiobox_value;
+		old_state_read_radiobox = read_radiobox_value;
+		old_state_write_radiobox = write_radiobox_value;
+		old_state_pid_radiobox = pid_radiobox_value;
 
 		int x,y;
 		x = 0;
@@ -86,36 +124,8 @@ void task_display(void *pvParameters)
 		mainpage.submit_button->update_state(x,y,tft);
 
 		// Disable value slider according to radioboxes options
-		if(read_radiobox_value != old_state_read_radiobox){
-			if(read_radiobox_value){
-				write_radiobox_value = false;
-				pid_radiobox_value  = false;
-				mainpage.value_slider->set_disabled(true);
-				mainpage.channel_slider->set_disabled(false);
-			}
-			gui_change_triggered = true;
-
-		}else if(write_radiobox_value != old_state_write_radiobox){
-			if(write_radiobox_value){
-				read_radiobox_value = false;
-				pid_radiobox_value = false;
-				mainpage.value_slider->set_disabled(false);
-				mainpage.channel_slider->set_disabled(false);
-			}
-			gui_change_triggered = true;
-
-		}else if(pid_radiobox_value != old_state_pid_radiobox){
-			if(pid_radiobox_value){
-				write_radiobox_value = false;
-				read_radiobox_value = false;
-				mainpage.value_slider->set_disabled(true);
-				mainpage.channel_slider->set_disabled(true);
-			}
-			gui_change_triggered = true;
-		}else{
-			gui_change_triggered = false;
-		}
-
+		handle_radioboxes();
+		
 		vTaskDelay(5/ portTICK_PERIOD_MS);
 	}
 }
