@@ -5,6 +5,7 @@
 #include "serial_communication.h"
 #include "analog_read_write.h"
 #include "gui_mainpage.h"
+#include "touch_screen.h"
 
 
 void setup() {
@@ -22,9 +23,13 @@ void setup() {
   x_received_commands_queue = xQueueCreate(QUEUE_LEN, sizeof(command_t)); 
   x_messages_to_send_queue = xQueueCreate(QUEUE_LEN,sizeof(message_t)); 
     
-    // Create task
+  // Init peripherials and setup home screen
 	init_tft();
-    
+  init_touch_screen();
+  init_mainpage();
+
+
+  // Create task  
   xTaskCreate(
     task_txrx_serial
     ,  "Tx and Rx for serial communication"   // name
@@ -41,6 +46,14 @@ void setup() {
     ,  2  // Priority 
     ,  NULL );
 
+    xTaskCreate(
+    task_touch_screen
+    ,  "Touch screen coordinate acquisition"   // name
+    ,  128  // stack size
+    ,  NULL
+    ,  2  // Priority 
+    ,  NULL );
+
 	xTaskCreate(
     task_display
     ,  "Display layout and data collection"   // name
@@ -49,11 +62,10 @@ void setup() {
     ,  2  // Priority 
     ,  NULL );
     
-    // Task scheduler is automatically initiated
-
 }
 
 void loop() {
-   // task already setup run the whole process
-
+  // Hola mundo! :p 
+  // Hello world!
+  // Hallo Welt! 
 }

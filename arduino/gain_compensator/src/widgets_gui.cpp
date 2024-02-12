@@ -73,11 +73,12 @@ void Button::update_state(int x_touch, int y_touch, Adafruit_ILI9341 tft){
 	if ((millis() - last_debounce_time) < DEBOUNCE_TIME) {
 		if (last_touch_processed) {
 			this->is_pressed(tft);
+
+		} else {
+			this->is_released(tft);
 			if (callback != nullptr) {
 				callback();
 			}
-		} else {
-			this->is_released(tft);
 		}
 	}
 

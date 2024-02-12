@@ -28,11 +28,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include <Adafruit_GFX.h>    // Core graphics library
 #include <SPI.h>       // this is needed for display
 #include <Adafruit_ILI9341.h>
-#include <Wire.h>      // this is needed for FT6206
-#include <Adafruit_FT6206.h>
-#include <Arduino_FreeRTOS.h>
 #include "serial_communication.h"
-#include <TouchScreen.h>
 
 
 #define DEBOUNCE_TIME 20
