@@ -36,10 +36,12 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include <TouchScreen.h>
 
 
+#define DEBOUNCE_TIME 50
+
 class Widget {
 public:
-  Widget(int x, int y, int width, int height, const char* label);
-  Widget(int x, int y, int radious, const char* label);
+  Widget(int x, int y, int width, int height, const char* label, bool* gui_change_triggered);
+  Widget(int x, int y, int radious, const char* label, bool* gui_change_triggered);
 
   virtual void update_state(int x_touch, int y_touch, Adafruit_ILI9341 tft);
   bool is_disabled() const;
@@ -48,14 +50,13 @@ public:
 protected:
   int x, y, width, height, radious;
   bool disabled;
+  bool* gui_change_triggered;
   const char* label;
 };
 
-#define DEBOUNCE_TIME 50
-
 class Button : public Widget {
 public:
-  Button(int x, int y, int width, int height, const char* label, void (*callback)());
+  Button(int x, int y, int width, int height, const char* label, void (*callback)(), bool* gui_change_triggered);
   void is_released(Adafruit_ILI9341 tft);
   void is_pressed(Adafruit_ILI9341 tft);
   void update_state(int x_touch, int y_touch, Adafruit_ILI9341 tft) override;
@@ -75,12 +76,12 @@ private:
 
 class Slider : public Widget {
 public:
-  Slider(int x, int y, int width, int height, int min_value, int max_value, int* value, const char* label,int r_slider);
+  Slider(int x, int y, int width, int height, int min_value, int max_value, int* value, const char* label,int r_slider, bool* gui_change_triggered);
   
   void update_slider_value(int x_touched);
   int value_to_x_position(int val);
   void init_slider(Adafruit_ILI9341 tft);
-  void draw_slider(Adafruit_ILI9341 tft);
+  void draw_slider(Adafruit_ILI9341 tft, int color);
   void update_state(int x_touch, int y_touch, Adafruit_ILI9341 tft);
 
 private:
@@ -91,7 +92,7 @@ private:
 
 class Checkbox : public Widget {
 public:
-  Checkbox(int x, int y, int radious, bool* checked, const char* label);
+  Checkbox(int x, int y, int radious, bool* checked, const char* label, bool* gui_change_triggered);
 
   void is_checked(Adafruit_ILI9341 tft);
   void is_not_checked(Adafruit_ILI9341 tft);
