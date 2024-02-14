@@ -108,6 +108,8 @@ int Slider::value_to_x_position(int val){
 }
 
 void Slider::init_slider(Adafruit_ILI9341 tft){
+	char buffer[10];
+	
 	*value = min_value;
 	tft.fillRect(x,y,width,height,ILI9341_BLUE);
 	tft.fillCircle(x,y+(height/2),r_slider,ILI9341_BLUE);
@@ -115,6 +117,12 @@ void Slider::init_slider(Adafruit_ILI9341 tft){
 	tft.setTextColor(ILI9341_WHITE);
 	tft.setTextSize(2);
 	tft.println(label);
+
+	sprintf(buffer, "%d", *value);
+	tft.setCursor(x+100, y-2*r_slider-2);
+	tft.setTextColor(ILI9341_WHITE);
+	tft.setTextSize(2);
+	tft.println(buffer);
 }
 
 void Slider::draw_slider(Adafruit_ILI9341 tft, int color){
@@ -149,7 +157,7 @@ void Slider::update_state(int x_touch, int y_touch, Adafruit_ILI9341 tft){
 }
 
 
-// **************** radiobox CLASS *****************
+// **************** RADIOBOX CLASS *****************
 Radio::Radio(int x, int y, int radious, bool* selected, const char* label, bool* gui_change_triggered)
     : Widget(x, y, radious, label, gui_change_triggered), selected(selected), last_debounce_time(0), last_touch_processed(false) {}
 
@@ -203,4 +211,19 @@ void Radio::update_state(int x_touch, int y_touch, Adafruit_ILI9341 tft){
 			this->is_not_selected(tft);
 		}	
 	}
+}
+
+// **************** LABEL CLASS *****************
+
+Textbox::Textbox(int x, int y, int width, int height, const char* label, bool* gui_change_triggered, int outline_color)
+			:Widget(x,y,width,height,label, gui_change_triggered), outline_color(outline_color){}
+
+void Textbox::update_state(Adafruit_ILI9341 tft){
+	tft.drawRect(x-2, y-2, width+4, height+4, outline_color);
+	tft.drawRect(x-1, y-1, width+2, height+2, outline_color);
+	tft.fillRect(x,y,width,height,ILI9341_BLACK),
+	tft.setCursor(x + 10, y+20);
+	tft.setTextColor(ILI9341_WHITE);
+	tft.setTextSize(2);
+	tft.println(label);
 }

@@ -99,3 +99,11 @@ private:
   unsigned long last_debounce_time;
   bool last_touch_processed;
 };
+
+class Textbox : public Widget {
+public:
+  Textbox(int x, int y, int width, int height, const char* label, bool* gui_change_triggered, int outline_color);
+  void update_state(Adafruit_ILI9341 tft);
+private:
+  int outline_color;
+};

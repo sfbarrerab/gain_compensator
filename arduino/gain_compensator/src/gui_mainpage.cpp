@@ -53,10 +53,10 @@ void init_mainpage(){
 	mainpage.pid_radiobox = new Radio(250,40,15,&pid_radiobox_value,"PID", &gui_change_triggered);
 	mainpage.pid_radiobox->is_not_selected(tft);
 
-	mainpage.channel_slider = new Slider(40,100,250,5,1,8,&channel_slider,"Channel:", 15, &gui_change_triggered);
+	mainpage.channel_slider = new Slider(40,100,230,5,1,8,&channel_slider,"Channel:", 15, &gui_change_triggered);
 	mainpage.channel_slider->init_slider(tft);
 
-	mainpage.value_slider = new Slider(40,160,250,5,0,100,&val_slider,"Value:", 15, &gui_change_triggered);
+	mainpage.value_slider = new Slider(40,160,230,5,0,100,&val_slider,"Value:", 15, &gui_change_triggered);
 	mainpage.value_slider->init_slider(tft);
 
 	mainpage.submit_button = new Button(210, 190, 90, 30, "Submit", to_popup_page, &gui_change_triggered);

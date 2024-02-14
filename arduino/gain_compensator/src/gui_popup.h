@@ -7,9 +7,11 @@
 
 #define POPUP_X0 70
 #define POPUP_Y0 50
+#define POPUP_BUTTON_WIDTH 70
 
 typedef struct confirmation_popup_t
 {
+  Textbox* message_popup;
   Button* close_button;
 } confirmation_popup_t;
 
