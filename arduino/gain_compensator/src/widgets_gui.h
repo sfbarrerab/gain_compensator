@@ -89,8 +89,7 @@ class Radio : public Widget {
 public:
   Radio(int x, int y, int radious, bool* selected, const char* label, bool* gui_change_triggered);
 
-  void is_selected(Adafruit_ILI9341 tft);
-  void is_not_selected(Adafruit_ILI9341 tft);
+  void init_radiobox(Adafruit_ILI9341 tft);
   void update_state(int x_touch, int y_touch, Adafruit_ILI9341 tft) override;
 
 

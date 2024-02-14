@@ -161,25 +161,24 @@ void Slider::update_state(int x_touch, int y_touch, Adafruit_ILI9341 tft){
 Radio::Radio(int x, int y, int radious, bool* selected, const char* label, bool* gui_change_triggered)
     : Widget(x, y, radious, label, gui_change_triggered), selected(selected), last_debounce_time(0), last_touch_processed(false) {}
 
-void Radio::is_selected(Adafruit_ILI9341 tft) {
-	*selected = true;
-	tft.drawCircle(x,y,radious,ILI9341_WHITE);
-	tft.fillCircle(x,y,radious-4,ILI9341_WHITE);
-	tft.setCursor(x + radious + 5, y-(radious/2));
-	tft.setTextColor(ILI9341_WHITE);
-	tft.setTextSize(2);
-	tft.println(label);
-}
-
-
-void Radio::is_not_selected(Adafruit_ILI9341 tft) {
-	*selected = false;
-	tft.drawCircle(x,y,radious,ILI9341_WHITE);
-	tft.fillCircle(x,y,radious-4,ILI9341_BLACK);
-	tft.setCursor(x + radious + 5, y-(radious/2));
-	tft.setTextColor(ILI9341_WHITE);
-	tft.setTextSize(2);
-	tft.println(label);
+void Radio::init_radiobox(Adafruit_ILI9341 tft) {
+	//*selected = true;
+	if(*selected){
+		tft.drawCircle(x,y,radious,ILI9341_WHITE);
+		tft.fillCircle(x,y,radious-4,ILI9341_WHITE);
+		tft.setCursor(x + radious + 5, y-(radious/2));
+		tft.setTextColor(ILI9341_WHITE);
+		tft.setTextSize(2);
+		tft.println(label);
+	}else{
+		//*selected = false;
+		tft.drawCircle(x,y,radious,ILI9341_WHITE);
+		tft.fillCircle(x,y,radious-4,ILI9341_BLACK);
+		tft.setCursor(x + radious + 5, y-(radious/2));
+		tft.setTextColor(ILI9341_WHITE);
+		tft.setTextSize(2);
+		tft.println(label);
+	}
 }
 
 void Radio::update_state(int x_touch, int y_touch, Adafruit_ILI9341 tft){
@@ -196,20 +195,12 @@ void Radio::update_state(int x_touch, int y_touch, Adafruit_ILI9341 tft){
 			*selected = true;//!(*selected);  -> Use this instead if you want to change the value of the
 											// radiobox each time the widget is pressed. However,
 											// I recomend to create another widget for checkboxes
-			if(*selected){
-				this->is_selected(tft); 
-			}else{
-				this->is_not_selected(tft);
-			}		
+			this->init_radiobox(tft); 	
 			last_touch_processed = true;
 		}
 	}
 	else if(*gui_change_triggered){		// the change is due to a trigger and not that the widget was touched
-		if(*selected){
-			this->is_selected(tft); 
-		}else{
-			this->is_not_selected(tft);
-		}	
+		this->init_radiobox(tft); 
 	}
 }
 

@@ -3,9 +3,9 @@
 // ********************************************************
 // GLOBAL VARIABLES DEFINITION
 
-bool read_radiobox_value;
-bool write_radiobox_value;
-bool pid_radiobox_value;
+bool read_radiobox_value = false;
+bool write_radiobox_value = true;
+bool pid_radiobox_value = false;
 
 bool old_state_read_radiobox;
 bool old_state_write_radiobox;
@@ -42,16 +42,17 @@ void to_popup_page(){
 }
 
 void init_mainpage(){
+
 	tft.fillScreen(ILI9341_BLACK);
 
 	mainpage.read_radiobox = new Radio(40,40,15,&read_radiobox_value,"Read", &gui_change_triggered);
-	mainpage.read_radiobox->is_not_selected(tft);
+	mainpage.read_radiobox->init_radiobox(tft);
 
 	mainpage.write_radiobox = new Radio(140,40,15,&write_radiobox_value,"Write", &gui_change_triggered);
-	mainpage.write_radiobox->is_selected(tft);
+	mainpage.write_radiobox->init_radiobox(tft);
 
 	mainpage.pid_radiobox = new Radio(250,40,15,&pid_radiobox_value,"PID", &gui_change_triggered);
-	mainpage.pid_radiobox->is_not_selected(tft);
+	mainpage.pid_radiobox->init_radiobox(tft);
 
 	mainpage.channel_slider = new Slider(40,100,230,5,1,8,&channel_slider,"Channel:", 15, &gui_change_triggered);
 	mainpage.channel_slider->init_slider(tft);
