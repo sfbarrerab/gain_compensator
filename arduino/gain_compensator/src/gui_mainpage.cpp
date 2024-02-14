@@ -21,6 +21,23 @@ gui_mainpage_t mainpage;
 // **********************************************************
 
 void to_popup_page(){
+	
+	command_t config_message_from_gui;	
+	String command_from_gui;
+	if(read_radiobox_value){
+		config_message_from_gui.command = 0;
+	}else if(write_radiobox_value){
+		config_message_from_gui.command = 1;
+	}else{
+		config_message_from_gui.command = 2;
+	}
+	config_message_from_gui.channel = channel_slider - 1;
+	config_message_from_gui.value = val_slider;
+	
+	if(x_received_commands_queue != NULL){
+		xQueueSend(x_received_commands_queue,(void *)&config_message_from_gui, QUEUE_SEND_BLOCK_TIME);
+	}
+
 	current_screen = POPUP;
 }
 

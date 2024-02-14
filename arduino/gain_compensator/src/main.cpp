@@ -13,6 +13,7 @@ void setup() {
   Serial.begin(115200);
   Serial.setTimeout(10); // This time might be increased if the string is large
 
+  // Create semaphore for serial printing
   if ( x_serial_txrx_semaphore == NULL )  // Check to confirm that the Serial Semaphore has not already been created.
   {
     x_serial_txrx_semaphore = xSemaphoreCreateMutex();  // Create a mutex semaphore
@@ -20,9 +21,10 @@ void setup() {
       xSemaphoreGive( ( x_serial_txrx_semaphore ) );  // Make the Serial Port available for use
   }
 
-  // Create 2 queues of 10 elements for possible commands and messages
+  // Create queues of 10 elements for possible commands and messages
   x_received_commands_queue = xQueueCreate(QUEUE_LEN, sizeof(command_t)); 
-  x_messages_to_send_queue = xQueueCreate(QUEUE_LEN,sizeof(message_t)); 
+  x_messages_to_send_to_pc_queue = xQueueCreate(QUEUE_LEN,sizeof(command_t)); 
+  x_messages_to_send_to_gui_queue = xQueueCreate(QUEUE_LEN,sizeof(command_t)); 
     
   // Init peripherials and setup home screen
 	init_tft();

@@ -1,5 +1,6 @@
 #pragma once
 #include "gui_mainpage.h"
+#include "analog_read_write.h"
 
 #define POPUP_WIDTH 220
 #define POPUP_HEIGHT 150

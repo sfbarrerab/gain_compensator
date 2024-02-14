@@ -24,11 +24,9 @@ void task_print_display(void *pvParameters)
       switch (old_screen)
       {
       case MAIN_PAGE:
-        Serial.println("Borre la tarea del mainpage");
         delete_main_page();
         break;
       case POPUP:
-        Serial.println("Borre la tarea del popup");
         delete_submit_popup();
         break;
       default:
@@ -43,7 +41,6 @@ void task_print_display(void *pvParameters)
     case MAIN_PAGE:
       if (!page_initialized) {
         init_mainpage();
-        Serial.println("Inicie la tarea del mainpage");
         page_initialized = 1;
       }
       update_gui_mainpage();

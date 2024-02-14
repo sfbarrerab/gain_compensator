@@ -12,17 +12,11 @@
 
 extern SemaphoreHandle_t x_serial_txrx_semaphore;
 extern QueueHandle_t x_received_commands_queue;
-extern QueueHandle_t x_messages_to_send_queue;
 
 typedef struct{
     uint8_t command;
     uint8_t channel;
     int value;
 }command_t;
-
-typedef struct{
-    uint8_t channel;
-    int value;
-}message_t;
 
 void task_txrx_serial(void *pvParameters);
