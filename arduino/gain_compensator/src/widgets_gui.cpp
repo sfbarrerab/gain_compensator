@@ -110,9 +110,17 @@ int Slider::value_to_x_position(int val){
 void Slider::init_slider(Adafruit_ILI9341 tft){
 	char buffer[10];
 	
-	*value = min_value;
-	tft.fillRect(x,y,width,height,ILI9341_BLUE);
-	tft.fillCircle(x,y+(height/2),r_slider,ILI9341_BLUE);
+	int color;
+	if(!disabled){
+		color = ILI9341_BLUE;
+	}else{
+		color = ILI9341_LIGHTGREY;
+	}
+
+	tft.fillRect(x-r_slider,y-r_slider,width+2*r_slider+5,2*r_slider+5,ILI9341_BLACK);
+	tft.fillRect(x,y,width,height,color);
+	tft.fillCircle(value_to_x_position(*value),y+(height/2),r_slider,color);
+	tft.fillRect(x+90,y-2*r_slider-2,60,16,ILI9341_BLACK);
 	tft.setCursor(x-r_slider, y-2*r_slider);
 	tft.setTextColor(ILI9341_WHITE);
 	tft.setTextSize(2);
@@ -125,34 +133,17 @@ void Slider::init_slider(Adafruit_ILI9341 tft){
 	tft.println(buffer);
 }
 
-void Slider::draw_slider(Adafruit_ILI9341 tft, int color){
-	char buffer[10];
-	sprintf(buffer, "%d", *value);
-	tft.fillRect(x-r_slider,y-r_slider,width+2*r_slider+5,2*r_slider+5,ILI9341_BLACK);
-	tft.fillRect(x,y,width,height,color);
-	tft.fillCircle(value_to_x_position(*value),y+(height/2),r_slider,color);
-	tft.fillRect(x+90,y-2*r_slider-2,60,16,ILI9341_BLACK);
-	tft.setCursor(x+100, y-2*r_slider-2);
-	tft.setTextColor(ILI9341_WHITE);
-	tft.setTextSize(2);
-	tft.println(buffer);
-}
-
 void Slider::update_state(int x_touch, int y_touch, Adafruit_ILI9341 tft){
 	if (!disabled){
-		if(*gui_change_triggered){
-			this->draw_slider(tft, ILI9341_BLUE);
-			this->update_slider_value(x);
-		}
 		if ((x_touch >= x-r_slider) && (x_touch <= (x + width+r_slider)) && (y_touch > (y - r_slider)) && (y_touch <= (y + r_slider))){
-			this->draw_slider(tft, ILI9341_BLUE);
 			this->update_slider_value(x_touch);
-		}
-	}else{
-		if(*gui_change_triggered){
-			this->draw_slider(tft, ILI9341_LIGHTGREY);
+			this->init_slider(tft);
 		}
 	}
+	if(*gui_change_triggered){
+		this->init_slider(tft);
+	}
+	
 	
 }
 
@@ -199,7 +190,7 @@ void Radio::update_state(int x_touch, int y_touch, Adafruit_ILI9341 tft){
 			last_touch_processed = true;
 		}
 	}
-	else if(*gui_change_triggered){		// the change is due to a trigger and not that the widget was touched
+	if(*gui_change_triggered){		// the change is due to a trigger and not that the widget was touched
 		this->init_radiobox(tft); 
 	}
 }
@@ -216,5 +207,5 @@ void Textbox::update_state(Adafruit_ILI9341 tft){
 	tft.setCursor(x + 10, y+20);
 	tft.setTextColor(ILI9341_WHITE);
 	tft.setTextSize(2);
-	tft.println(label);
+	tft.println(label); // recognize the \n and plot it in a for
 }

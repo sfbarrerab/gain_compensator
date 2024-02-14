@@ -7,6 +7,9 @@
 #define TFT_CS 10
 #define TFT_DC 9
 
+#define MIN_CHANNEL_SLIDER 1
+#define MIN_VALUE_SLIDER 0
+
 typedef struct gui_mainpage_t
 {
     Radio* read_radiobox;

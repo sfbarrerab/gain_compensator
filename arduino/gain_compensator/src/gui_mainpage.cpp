@@ -3,16 +3,16 @@
 // ********************************************************
 // GLOBAL VARIABLES DEFINITION
 
-bool read_radiobox_value = false;
-bool write_radiobox_value = true;
+bool read_radiobox_value = true;
+bool write_radiobox_value = false;
 bool pid_radiobox_value = false;
 
 bool old_state_read_radiobox;
 bool old_state_write_radiobox;
 bool old_state_pid_radiobox;
 
-int val_slider;
-int channel_slider;
+int val_slider = MIN_VALUE_SLIDER;
+int channel_slider = MIN_CHANNEL_SLIDER;
 
 bool gui_change_triggered = false;
 
@@ -46,21 +46,30 @@ void init_mainpage(){
 	tft.fillScreen(ILI9341_BLACK);
 
 	mainpage.read_radiobox = new Radio(40,40,15,&read_radiobox_value,"Read", &gui_change_triggered);
-	mainpage.read_radiobox->init_radiobox(tft);
-
 	mainpage.write_radiobox = new Radio(140,40,15,&write_radiobox_value,"Write", &gui_change_triggered);
-	mainpage.write_radiobox->init_radiobox(tft);
-
 	mainpage.pid_radiobox = new Radio(250,40,15,&pid_radiobox_value,"PID", &gui_change_triggered);
-	mainpage.pid_radiobox->init_radiobox(tft);
-
-	mainpage.channel_slider = new Slider(40,100,230,5,1,8,&channel_slider,"Channel:", 15, &gui_change_triggered);
-	mainpage.channel_slider->init_slider(tft);
-
-	mainpage.value_slider = new Slider(40,160,230,5,0,100,&val_slider,"Value:", 15, &gui_change_triggered);
-	mainpage.value_slider->init_slider(tft);
-
+	mainpage.channel_slider = new Slider(40,100,230,5, MIN_CHANNEL_SLIDER, MAX_NUMBER_OF_CHANNELS,&channel_slider,"Channel:", 15, &gui_change_triggered);
+	mainpage.value_slider = new Slider(40,160,230,5, MIN_VALUE_SLIDER, 255, &val_slider,"Value:", 15, &gui_change_triggered);
 	mainpage.submit_button = new Button(210, 190, 90, 30, "Submit", to_popup_page, &gui_change_triggered);
+
+	if(read_radiobox_value){
+		mainpage.value_slider->set_disabled(true);
+		mainpage.channel_slider->set_disabled(false);
+	}
+	if(write_radiobox_value){
+		mainpage.value_slider->set_disabled(false);
+		mainpage.channel_slider->set_disabled(false);
+	}
+	if(pid_radiobox_value){
+		mainpage.value_slider->set_disabled(true);
+		mainpage.channel_slider->set_disabled(true);
+	}
+
+	mainpage.read_radiobox->init_radiobox(tft);
+	mainpage.write_radiobox->init_radiobox(tft);
+	mainpage.pid_radiobox->init_radiobox(tft);
+	mainpage.channel_slider->init_slider(tft);
+	mainpage.value_slider->init_slider(tft);
 	mainpage.submit_button->is_released(tft);
 }
 
