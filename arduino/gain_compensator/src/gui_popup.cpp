@@ -15,20 +15,20 @@ void init_submit_popup(){
   {
     if(message_received_from_gui.command == 0){
       
-      message_popup += "   Channel: ";
+      message_popup += "    Channel: ";
       message_popup += String(message_received_from_gui.channel + 1);
 
-      message_popup += "\n\n          Value: "; 
+      message_popup += "\n\n         Value: "; 
       message_popup += String(message_received_from_gui.value);
 
     }else if(message_received_from_gui.command == 1){
       message_popup += " Value: ";
       message_popup += String(message_received_from_gui.value);
-      message_popup += " write \n\n         in Channel: ";
+      message_popup += " write \n\n       in Channel: ";
       message_popup += String(message_received_from_gui.channel + 1);
 
     }else if(message_received_from_gui.command == 2){
-      message_popup += "    PID mode \n\n          activated";
+      message_popup += "    PID mode \n\n         activated";
     }
 
   }

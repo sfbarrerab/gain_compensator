@@ -2,11 +2,14 @@
 #include "gui_mainpage.h"
 #include "analog_read_write.h"
 
-#define POPUP_WIDTH 220
-#define POPUP_HEIGHT 150
+#define SCREEN_WIDTH 320
+#define SCREEN_HEIGHT 240
 
-#define POPUP_X0 70
-#define POPUP_Y0 50
+#define POPUP_WIDTH 220
+#define POPUP_HEIGHT 170
+
+#define POPUP_X0 ((SCREEN_WIDTH-POPUP_WIDTH)/2)
+#define POPUP_Y0 ((SCREEN_HEIGHT-POPUP_HEIGHT)/2)
 #define POPUP_BUTTON_WIDTH 70
 
 typedef struct confirmation_popup_t

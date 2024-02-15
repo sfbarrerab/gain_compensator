@@ -76,7 +76,6 @@ public:
   void update_slider_value(int x_touched);
   int value_to_x_position(int val);
   void init_slider(Adafruit_ILI9341 tft);
-  void draw_slider(Adafruit_ILI9341 tft, int color);
   void update_state(int x_touch, int y_touch, Adafruit_ILI9341 tft);
 
 private:
@@ -98,6 +97,7 @@ private:
   unsigned long last_debounce_time;
   bool last_touch_processed;
 };
+
 
 class Textbox : public Widget {
 public:
