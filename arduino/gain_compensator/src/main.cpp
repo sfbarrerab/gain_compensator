@@ -4,9 +4,9 @@
 #include <queue.h>
 #include "serial_communication.h"
 #include "analog_read_write.h"
-#include "gui_mainpage.h"
+#include "gui/gui_mainpage.h"
 #include "touch_screen.h"
-#include "screen_displayed.h"
+#include "gui/screen_displayed.h"
 
 
 void setup() {
