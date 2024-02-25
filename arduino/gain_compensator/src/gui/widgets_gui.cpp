@@ -103,7 +103,7 @@ void Slider::update_slider_value(int x_touched){
 
 int Slider::value_to_x_position(int val){
 	double step = double(width)/double(max_value-min_value);
-	int x_position = (double(val-min_value)*step)+x;
+	int x_position = (double(val-min_value)*step)+x+r_slider;
 	return x_position;
 }
 
@@ -117,11 +117,11 @@ void Slider::init_slider(Adafruit_ILI9341 tft){
 		color = ILI9341_LIGHTGREY;
 	}
 
-	tft.fillRect(x-r_slider,y-r_slider,width+2*r_slider+5,2*r_slider+5,ILI9341_BLACK);
-	tft.fillRect(x,y,width,height,color);
+	tft.fillRect(x,y-r_slider,width+2.2*r_slider,2.2*r_slider,ILI9341_BLACK);
+	tft.fillRect(x+r_slider,y,width,height,color);
 	tft.fillCircle(value_to_x_position(*value),y+(height/2),r_slider,color);
 	tft.fillRect(x+90,y-2*r_slider-2,60,16,ILI9341_BLACK);
-	tft.setCursor(x-r_slider, y-2*r_slider);
+	tft.setCursor(x, y-2*r_slider);
 	tft.setTextColor(ILI9341_WHITE);
 	tft.setTextSize(2);
 	tft.println(label);
@@ -155,17 +155,17 @@ Radio::Radio(int x, int y, int radious, bool* selected, const char* label, bool*
 void Radio::init_radiobox(Adafruit_ILI9341 tft) {
 	//*selected = true;
 	if(*selected){
-		tft.drawCircle(x,y,radious,ILI9341_WHITE);
-		tft.fillCircle(x,y,radious-4,ILI9341_WHITE);
-		tft.setCursor(x + radious + 5, y-(radious/2));
+		tft.drawCircle(x+radious,y,radious,ILI9341_WHITE);
+		tft.fillCircle(x+radious,y,radious-4,ILI9341_WHITE);
+		tft.setCursor(x + 2*radious + 5, y-(radious/2));
 		tft.setTextColor(ILI9341_WHITE);
 		tft.setTextSize(2);
 		tft.println(label);
 	}else{
 		//*selected = false;
-		tft.drawCircle(x,y,radious,ILI9341_WHITE);
-		tft.fillCircle(x,y,radious-4,ILI9341_BLACK);
-		tft.setCursor(x + radious + 5, y-(radious/2));
+		tft.drawCircle(x+radious,y,radious,ILI9341_WHITE);
+		tft.fillCircle(x+radious,y,radious-4,ILI9341_BLACK);
+		tft.setCursor(x + 2*radious + 5, y-(radious/2));
 		tft.setTextColor(ILI9341_WHITE);
 		tft.setTextSize(2);
 		tft.println(label);

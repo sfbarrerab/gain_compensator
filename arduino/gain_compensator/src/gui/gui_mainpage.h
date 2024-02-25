@@ -1,25 +1,33 @@
 #pragma once
 #include "widgets_gui.h"
-#include "gui_popup.h"
 #include "touch_screen.h"
-#include "screen_displayed.h"
 
 #define TFT_CS 10
 #define TFT_DC 9
 
-#define MIN_CHANNEL_SLIDER 1
-#define MIN_VALUE_SLIDER 0
+#define MENU_BTN_WIDTH 90
+#define MENU_BTN_HEIGHT (230/3)
+
+#define SCREEN_WIDTH 320
+#define SCREEN_HEIGHT 240
+#define PADDING 10
 
 typedef struct gui_mainpage_t
 {
-    Radio* read_radiobox;
-    Radio* write_radiobox;
-    Radio* pid_radiobox;
-    Slider* channel_slider;
-    Slider* value_slider;
-    Button* submit_button;
+    Button* set_page_button;
+    Button* powers_page_button;
+    Button* attenuations_page_button;
 }gui_mainpage_t;
 
-void init_mainpage();
+typedef enum {
+  MAIN_PAGE,
+  POPUP,
+} Screens;
+
+extern Adafruit_ILI9341 tft;
+extern Screens current_screen;
+
+
+void init_main_page();
 void delete_main_page();
-void update_gui_mainpage();
+void update_gui_main_page();

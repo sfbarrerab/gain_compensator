@@ -29,7 +29,7 @@ void setup() {
   // Init peripherials and setup home screen
 	init_tft();
   init_touch_screen();
-  init_mainpage();
+  init_set_page();
 
 
   // Create task  

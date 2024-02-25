@@ -1,8 +1,5 @@
 #include "screen_displayed.h"
 
-Adafruit_ILI9341 tft = Adafruit_ILI9341(TFT_CS, TFT_DC);
-Screens current_screen;
-
 void init_tft()
 {
 	tft.begin();
@@ -17,14 +14,14 @@ void task_print_display(void *pvParameters)
   int page_initialized = 0;
 
   Screens old_screen = MAIN_PAGE;
-
+  init_main_page();
   while(1){
-
+    update_gui_main_page();
     if(old_screen != current_screen){
       switch (old_screen)
       {
       case MAIN_PAGE:
-        delete_main_page();
+        delete_set_page();
         break;
       case POPUP:
         delete_submit_popup();
@@ -40,10 +37,10 @@ void task_print_display(void *pvParameters)
     {
     case MAIN_PAGE:
       if (!page_initialized) {
-        init_mainpage();
+        init_set_page();
         page_initialized = 1;
       }
-      update_gui_mainpage();
+      update_gui_set_page();
       break;
     case POPUP:
       if(!page_initialized){
