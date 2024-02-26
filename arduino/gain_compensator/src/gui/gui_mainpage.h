@@ -20,7 +20,9 @@ typedef struct gui_mainpage_t
 }gui_mainpage_t;
 
 typedef enum {
-  MAIN_PAGE,
+  SET_PAGE,
+  POWERS_PAGE,
+  ATTENUATION_PAGE,
   POPUP,
 } Screens;
 

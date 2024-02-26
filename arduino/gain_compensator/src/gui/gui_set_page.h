@@ -1,6 +1,5 @@
 #pragma once
 #include "gui_mainpage.h"
-#include "touch_screen.h"
 #include "screen_displayed.h"
 
 #define MIN_CHANNEL_SLIDER 1

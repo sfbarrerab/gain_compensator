@@ -3,7 +3,7 @@
 confirmation_popup_t submit_popup_layout;
 
 void to_main_page(){
-	current_screen = MAIN_PAGE;
+	current_screen = SET_PAGE;
 }
 
 void init_submit_popup(){

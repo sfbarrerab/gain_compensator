@@ -2,9 +2,6 @@
 #include "gui_mainpage.h"
 #include "analog_read_write.h"
 
-#define SCREEN_WIDTH 320
-#define SCREEN_HEIGHT 240
-
 #define POPUP_WIDTH 220
 #define POPUP_HEIGHT 170
 
