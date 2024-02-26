@@ -84,11 +84,11 @@ void task_txrx_serial(void *pvParameters){
     if(x_messages_to_send_to_pc_queue != NULL && xQueueReceive(x_messages_to_send_to_pc_queue, (void *)&message_to_send, 0) == pdTRUE)
     {
       if ( xSemaphoreTake( x_serial_txrx_semaphore, SEMAPHORE_BLOCK_TIME ) == pdTRUE ){
-        Serial.print("Channel: ");
-        Serial.print(message_to_send.channel + 1);
+        // Serial.print("Channel: ");
+        // Serial.print(message_to_send.channel + 1);
 
-        Serial.print(", Value: ");
-        Serial.println(message_to_send.value);
+        // Serial.print(", Value: ");
+        // Serial.println(message_to_send.value);
         xSemaphoreGive( x_serial_txrx_semaphore );
       }
     }

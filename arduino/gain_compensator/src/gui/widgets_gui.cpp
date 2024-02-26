@@ -42,7 +42,7 @@ void Button::is_released(Adafruit_ILI9341 tft){
 	tft.drawRect(x-1, y-1, width+2, height+2, ILI9341_BLACK);
 	tft.drawRect(x-2, y-2, width+4, height+4, ILI9341_BLACK);
 	tft.fillRect(x, y, width, height, ILI9341_BLUE);
-	tft.setCursor(x + 6, y + (height/4));
+	tft.setCursor(x + 6, y + (height/2)-6);
 	tft.setTextColor(ILI9341_WHITE);
 	tft.setTextSize(2);
 	tft.println(label);
@@ -50,7 +50,7 @@ void Button::is_released(Adafruit_ILI9341 tft){
 
 void Button::is_pressed(Adafruit_ILI9341 tft){
 	tft.fillRect(x-2, y-2, width+4, height+4, ILI9341_BLUE);
-	tft.setCursor(x + 6, y + (height/4));
+	tft.setCursor(x + 6, y + (height/2)-6);
 	tft.setTextColor(ILI9341_WHITE);
 	tft.setTextSize(2);
 	tft.println(label);
@@ -197,15 +197,25 @@ void Radio::update_state(int x_touch, int y_touch, Adafruit_ILI9341 tft){
 
 // **************** LABEL CLASS *****************
 
-Textbox::Textbox(int x, int y, int width, int height, const char* label, bool* gui_change_triggered, int outline_color)
-			:Widget(x,y,width,height,label, gui_change_triggered), outline_color(outline_color){}
+Textbox::Textbox(int x, int y, int width, int height, const char* label, bool* gui_change_triggered, int outline_color, int text_color)
+			:Widget(x,y,width,height,label, gui_change_triggered), outline_color(outline_color), text_color(text_color){}
 
 void Textbox::update_state(Adafruit_ILI9341 tft){
 	tft.drawRect(x-2, y-2, width+4, height+4, outline_color);
 	tft.drawRect(x-1, y-1, width+2, height+2, outline_color);
 	tft.fillRect(x,y,width,height,ILI9341_BLACK),
-	tft.setCursor(x + 10, y+20);
-	tft.setTextColor(ILI9341_WHITE);
+	tft.setCursor(x, y);
+	tft.setTextColor(text_color);
 	tft.setTextSize(2);
 	tft.println(label); // recognize the \n and plot it in a for
+}
+
+void Textbox::update_label(Adafruit_ILI9341 tft, const char* new_label){
+	tft.drawRect(x-2, y-2, width+4, height+4, outline_color);
+	tft.drawRect(x-1, y-1, width+2, height+2, outline_color);
+	tft.fillRect(x,y,width,height,ILI9341_BLACK),
+	tft.setCursor(x, y);
+	tft.setTextColor(text_color);
+	tft.setTextSize(1);
+	tft.println(new_label); // recognize the \n and plot it in a for
 }

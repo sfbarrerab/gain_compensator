@@ -33,7 +33,11 @@ void init_submit_popup(){
 
   }
 
-  submit_popup_layout.message_popup = new Textbox(POPUP_X0,POPUP_Y0,POPUP_WIDTH,POPUP_HEIGHT,message_popup.c_str(),NULL,ILI9341_DARKGREEN);
+  tft.fillRect(POPUP_X0,POPUP_Y0,POPUP_WIDTH,POPUP_HEIGHT,ILI9341_BLACK);
+  tft.drawRect(POPUP_X0-2, POPUP_Y0-2, POPUP_WIDTH+4, POPUP_HEIGHT+4, ILI9341_DARKGREEN);
+	tft.drawRect(POPUP_X0-1, POPUP_Y0-1, POPUP_WIDTH+2, POPUP_HEIGHT+2, ILI9341_DARKGREEN);
+
+  submit_popup_layout.message_popup = new Textbox(POPUP_X0+PADDING,POPUP_Y0+5*PADDING,200,100,message_popup.c_str(),NULL,ILI9341_BLACK, ILI9341_WHITE);
   submit_popup_layout.message_popup->update_state(tft);
 
   submit_popup_layout.close_button = new Button(POPUP_X0+(POPUP_WIDTH/2)-(POPUP_BUTTON_WIDTH/2), 160, POPUP_BUTTON_WIDTH, 30, "Close", to_main_page, NULL);

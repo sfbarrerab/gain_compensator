@@ -22,7 +22,7 @@ typedef struct gui_mainpage_t
 typedef enum {
   SET_PAGE,
   POWERS_PAGE,
-  ATTENUATION_PAGE,
+  STATUS_PAGE,
   POPUP,
 } Screens;
 

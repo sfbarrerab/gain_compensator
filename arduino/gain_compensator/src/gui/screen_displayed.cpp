@@ -15,9 +15,9 @@ void delete_previous_page(int old_screen){
       delete_set_page();
       break;
     case POWERS_PAGE:
-    delete_powers_page();
+      delete_powers_page();
       break;
-    case ATTENUATION_PAGE:
+    case STATUS_PAGE:
       break;
     case POPUP:
       delete_submit_popup();
@@ -61,7 +61,11 @@ void task_print_display(void *pvParameters)
       }
       update_gui_powers_page();
       break;
-    case ATTENUATION_PAGE:
+    case STATUS_PAGE:
+      if (!page_initialized) {
+        init_status_page();
+        page_initialized = 1;
+      }
       break;
     case POPUP:
       if(!page_initialized){
