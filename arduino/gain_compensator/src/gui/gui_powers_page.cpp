@@ -9,7 +9,7 @@ command_t powers_message_values_request;
 command_t message_received;  
 
 void init_powers_page(){
-
+  String label_channel_power = "";
   powers_message_values_request.command = 0;
 
   tft.fillRect(MENU_BTN_WIDTH,0,SCREEN_WIDTH-MENU_BTN_WIDTH,SCREEN_HEIGHT,ILI9341_BLACK);
@@ -23,13 +23,15 @@ void init_powers_page(){
 
     if(x_messages_to_send_to_gui_queue != NULL && (xQueueReceive(x_messages_to_send_to_gui_queue, (void *)&message_received, 10) == pdTRUE))
     {
-      String label_channel_power = "Ch ";
+      label_channel_power = "Ch ";
       label_channel_power += String(i+1);
       label_channel_power += ": ";
       label_channel_power += String(message_received.value);  
       label_channel_power += " dB";
-      powers_page.channels_power[i] = new Textbox(TEXTBOX_X0,2*PADDING+((i%4)*SCREEN_HEIGHT/4),(SCREEN_WIDTH-MENU_BTN_WIDTH)/2,20,label_channel_power.c_str(),NULL,ILI9341_BLACK, ILI9341_WHITE);
     }
+
+    powers_page.channels_power[i] = new Textbox(TEXTBOX_X0,2*PADDING+((i%4)*SCREEN_HEIGHT/4),(SCREEN_WIDTH-MENU_BTN_WIDTH)/2,20,label_channel_power.c_str(),NULL,ILI9341_BLACK, ILI9341_WHITE,1);
+    powers_page.channels_power[i]->update_label(tft,NULL);
   }
 }
 

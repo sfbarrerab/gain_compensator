@@ -101,9 +101,8 @@ private:
 
 class Textbox : public Widget {
 public:
-  Textbox(int x, int y, int width, int height, const char* label, bool* gui_change_triggered, int outline_color, int text_color);
-  void update_state(Adafruit_ILI9341 tft);
+  Textbox(int x, int y, int width, int height, const char* label, bool* gui_change_triggered, int outline_color, int text_color, int text_size);
   void update_label(Adafruit_ILI9341 tft, const char* new_label);
 private:
-  int outline_color, text_color;
+  int outline_color, text_color, text_size;
 };

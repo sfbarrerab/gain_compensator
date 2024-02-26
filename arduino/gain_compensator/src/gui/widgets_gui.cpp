@@ -197,18 +197,8 @@ void Radio::update_state(int x_touch, int y_touch, Adafruit_ILI9341 tft){
 
 // **************** LABEL CLASS *****************
 
-Textbox::Textbox(int x, int y, int width, int height, const char* label, bool* gui_change_triggered, int outline_color, int text_color)
-			:Widget(x,y,width,height,label, gui_change_triggered), outline_color(outline_color), text_color(text_color){}
-
-void Textbox::update_state(Adafruit_ILI9341 tft){
-	tft.drawRect(x-2, y-2, width+4, height+4, outline_color);
-	tft.drawRect(x-1, y-1, width+2, height+2, outline_color);
-	tft.fillRect(x,y,width,height,ILI9341_BLACK),
-	tft.setCursor(x, y);
-	tft.setTextColor(text_color);
-	tft.setTextSize(2);
-	tft.println(label); // recognize the \n and plot it in a for
-}
+Textbox::Textbox(int x, int y, int width, int height, const char* label, bool* gui_change_triggered, int outline_color, int text_color, int text_size)
+			:Widget(x,y,width,height,label, gui_change_triggered), outline_color(outline_color), text_color(text_color), text_size(text_size){}
 
 void Textbox::update_label(Adafruit_ILI9341 tft, const char* new_label){
 	tft.drawRect(x-2, y-2, width+4, height+4, outline_color);
@@ -216,6 +206,7 @@ void Textbox::update_label(Adafruit_ILI9341 tft, const char* new_label){
 	tft.fillRect(x,y,width,height,ILI9341_BLACK),
 	tft.setCursor(x, y);
 	tft.setTextColor(text_color);
-	tft.setTextSize(1);
-	tft.println(new_label); // recognize the \n and plot it in a for
+	tft.setTextSize(text_size);
+	(new_label!=NULL)?tft.println(new_label):tft.println(label);
+	// Next update: recognize the \n and plot it in a for
 }
