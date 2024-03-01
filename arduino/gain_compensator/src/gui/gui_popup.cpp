@@ -22,13 +22,16 @@ void init_submit_popup(){
       message_popup += String(message_received_from_gui.value);
 
     }else if(message_received_from_gui.command == 1){
-      message_popup += " Value: ";
+      message_popup += "Atten. of ";
       message_popup += String(message_received_from_gui.value);
-      message_popup += " write \n\n       in Channel: ";
+      message_popup += " dB \n\n     set in Channel ";
       message_popup += String(message_received_from_gui.channel + 1);
 
     }else if(message_received_from_gui.command == 2){
-      message_popup += "    PID mode \n\n         activated";
+      message_popup += " Power of ";
+      message_popup += String(message_received_from_gui.value);
+      message_popup += " dB \n\n     set in Channel ";
+      message_popup += String(message_received_from_gui.channel + 1);
     }
 
   }

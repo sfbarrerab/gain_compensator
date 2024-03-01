@@ -44,7 +44,7 @@ void init_set_page(){
 	set_page.attenuation_radiobox = new Radio(MENU_BTN_WIDTH + PADDING,40,RADIOBOX_RADIUS,&attenuation_radiobox_value,"Atten.", &gui_change_triggered);
 	set_page.pid_radiobox = new Radio(225,40,RADIOBOX_RADIUS,&pid_radiobox_value,"Power", &gui_change_triggered);
 	set_page.channel_slider = new Slider(MENU_BTN_WIDTH + PADDING,100,SLIDER_WIDTH,5, MIN_CHANNEL_SLIDER, MAX_NUMBER_OF_CHANNELS,&channel_slider,"Channel:", 15, &gui_change_triggered);
-	set_page.value_slider = new Slider(MENU_BTN_WIDTH + PADDING,160,SLIDER_WIDTH,5, MIN_VALUE_SLIDER, 255, &val_slider,"Atten.:", 15, &gui_change_triggered);
+	set_page.value_slider = new Slider(MENU_BTN_WIDTH + PADDING,160,SLIDER_WIDTH,5, MIN_VALUE_SLIDER, 255, &val_slider,"Atten. (dB):", 15, &gui_change_triggered);
 	set_page.submit_button = new Button(210, 190, 90, 30, "Submit", to_popup_page, &gui_change_triggered);
 
 	set_page.attenuation_radiobox->init_radiobox(tft);
@@ -58,12 +58,14 @@ void handle_radioboxes(){
 	if(attenuation_radiobox_value != old_state_attenuation_radiobox){
 		if(attenuation_radiobox_value){
 			pid_radiobox_value = false;
+			set_page.value_slider->change_label("Atten. (dB):");
 		}
 		gui_change_triggered = true;
 
 	}else if(pid_radiobox_value != old_state_pid_radiobox){
 		if(pid_radiobox_value){
 			attenuation_radiobox_value = false;
+			set_page.value_slider->change_label("Power (dB):");
 		}
 		gui_change_triggered = true;
 	}else{

@@ -68,6 +68,7 @@ class Slider : public Widget {
 public:
   Slider(int x, int y, int width, int height, int min_value, int max_value, int* value, const char* label,int r_slider, bool* gui_change_triggered);
   
+  void change_label(const char* new_label);
   void update_slider_value(int x_touched);
   int value_to_x_position(int val);
   void init_slider(Adafruit_ILI9341 tft);

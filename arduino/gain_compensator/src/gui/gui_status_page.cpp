@@ -13,7 +13,7 @@ void init_status_page(){
 
   read_config_epprom(current_ch_configurations);
 
-  String header = " Channel     Constant    Value";
+  String header = " Channel     Constant     Value";
   status_page.header_status = new Textbox(MENU_BTN_WIDTH+2*PADDING,2*PADDING,SCREEN_WIDTH-MENU_BTN_WIDTH,8,header.c_str(),NULL,ILI9341_BLACK,ILI9341_BLUE,1,NULL);
 
   for(uint8_t i = 0; i < MAX_NUMBER_OF_CHANNELS; i++){
@@ -26,7 +26,7 @@ void init_status_page(){
     }else{
       channel_status += "NA          ";
     }
-    channel_status += String(current_ch_configurations[i]->value);
+    channel_status += String(current_ch_configurations[i]->value) + " dB";
     status_page.channels_status[i] = new Textbox(MENU_BTN_WIDTH+2*PADDING,2*PADDING + (i+1)*SPACING_BETWEEN_LINES,SCREEN_WIDTH-MENU_BTN_WIDTH,8,channel_status.c_str(),NULL,ILI9341_BLACK,ILI9341_WHITE,1,NULL);
     status_page.channels_status[i]->init_label(tft);
   }

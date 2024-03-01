@@ -89,6 +89,10 @@ void Button::update_state(int x_touch, int y_touch, Adafruit_ILI9341 tft){
 Slider::Slider(int x, int y, int width, int height, int min_value, int max_value, int* value, const char* label, int r_slider,  bool* gui_change_triggered)
     : Widget(x, y, width, height, label, gui_change_triggered), min_value(min_value), max_value(max_value), value(value), r_slider(r_slider) {}
 
+void Slider::change_label(const char* new_label){
+	label = new_label;
+}
+
 void Slider::update_slider_value(int x_touched){
 	double step = double(width)/double(max_value-min_value);
 	*value = int(double(x_touched-x)/step)+min_value;
@@ -120,14 +124,18 @@ void Slider::init_slider(Adafruit_ILI9341 tft){
 	tft.fillRect(x,y-r_slider,width+2.2*r_slider,2.2*r_slider,ILI9341_BLACK);
 	tft.fillRect(x+r_slider,y,width,height,color);
 	tft.fillCircle(value_to_x_position(*value),y+(height/2),r_slider,color);
-	tft.fillRect(x+90,y-2*r_slider-2,60,16,ILI9341_BLACK);
+	if(*gui_change_triggered){
+		tft.fillRect(x,y-2*r_slider,150,15,ILI9341_BLACK);
+	}
+
 	tft.setCursor(x, y-2*r_slider);
 	tft.setTextColor(ILI9341_WHITE);
 	tft.setTextSize(2);
 	tft.println(label);
 
 	sprintf(buffer, "%d", *value);
-	tft.setCursor(x+100, y-2*r_slider-2);
+	tft.fillRect(x+140,y-2*r_slider-2,60,16,ILI9341_BLACK);
+	tft.setCursor(x+150, y-2*r_slider-2);
 	tft.setTextColor(ILI9341_WHITE);
 	tft.setTextSize(2);
 	tft.println(buffer);
