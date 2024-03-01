@@ -12,5 +12,5 @@ typedef struct{
 }command_t;
 
 void init_channels();
-void read_config_epprom();
+void read_config_epprom(command_t* current_ch_configurations[MAX_NUMBER_OF_CHANNELS]);
 void update_config_epprom(command_t new_configuration);

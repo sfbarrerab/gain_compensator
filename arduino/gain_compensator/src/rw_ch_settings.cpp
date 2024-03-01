@@ -22,14 +22,9 @@ void update_config_epprom(command_t new_configuration){
   EEPROM.put(INITIAL_ADDR+new_configuration.channel*sizeof(command_t),new_configuration);
 }
 
-void read_config_epprom(){
+void read_config_epprom(command_t* current_ch_configurations[MAX_NUMBER_OF_CHANNELS]){
   
   for(uint8_t i = 0; i < MAX_NUMBER_OF_CHANNELS; i++){
-    EEPROM.get(INITIAL_ADDR+i*sizeof(command_t),previous_configuration[i]);
-
-    Serial.println("Channel "+ String(i+1) + " settings:");
-    Serial.println(previous_configuration[i].channel);
-    Serial.println(previous_configuration[i].command);
-    Serial.println(previous_configuration[i].value);
+    EEPROM.get(INITIAL_ADDR+i*sizeof(command_t),*current_ch_configurations[i]);
   }
 }
