@@ -30,7 +30,7 @@ void init_powers_page(){
     {
       label_channel_power = String(message_received.value);  
       label_channel_power += " dB";
-      powers_page.channels_power[i] = new Textbox(TEXTBOX_X0,2*PADDING+((i%4)*SCREEN_HEIGHT/4),30,8,label_channel_power.c_str(),NULL,ILI9341_BLACK, ILI9341_WHITE,1,const_mini_label.c_str());
+      powers_page.channels_power[i] = new Textbox(TEXTBOX_X0,2*PADDING+((i%4)*SCREEN_HEIGHT/4),50,8,label_channel_power.c_str(),NULL,ILI9341_BLACK, ILI9341_WHITE,1,const_mini_label.c_str());
     }
 
     powers_page.channels_power[i]->init_label(tft);
