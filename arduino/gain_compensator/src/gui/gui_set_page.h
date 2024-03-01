@@ -8,6 +8,7 @@
 #define RADIOBOX_RADIUS 15
 #define SLIDER_WIDTH (SCREEN_WIDTH-MENU_BTN_WIDTH - 6*PADDING)
 
+
 typedef struct gui_set_page_t
 {
     Radio* attenuation_radiobox;

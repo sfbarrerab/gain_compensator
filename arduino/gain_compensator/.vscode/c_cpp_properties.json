@@ -9,6 +9,7 @@
             "name": "PlatformIO",
             "includePath": [
                 "C:/Users/shantrax/Documents/FAU/hiwi/gain_compensator_interface/arduino/gain_compensator/src",
+                "C:/Users/shantrax/.platformio/packages/framework-arduino-avr/libraries/EEPROM/src",
                 "C:/Users/shantrax/Documents/FAU/hiwi/gain_compensator_interface/arduino/gain_compensator/.pio/libdeps/megaatmega2560/Adafruit FT6206 Library",
                 "C:/Users/shantrax/Documents/FAU/hiwi/gain_compensator_interface/arduino/gain_compensator/.pio/libdeps/megaatmega2560/Adafruit ILI9341",
                 "C:/Users/shantrax/Documents/FAU/hiwi/gain_compensator_interface/arduino/gain_compensator/.pio/libdeps/megaatmega2560/Adafruit GFX Library",
@@ -22,7 +23,6 @@
                 "C:/Users/shantrax/Documents/FAU/hiwi/gain_compensator_interface/arduino/gain_compensator/.pio/libdeps/megaatmega2560/Adafruit STMPE610",
                 "C:/Users/shantrax/Documents/FAU/hiwi/gain_compensator_interface/arduino/gain_compensator/.pio/libdeps/megaatmega2560/Adafruit TSC2007",
                 "C:/Users/shantrax/Documents/FAU/hiwi/gain_compensator_interface/arduino/gain_compensator/.pio/libdeps/megaatmega2560/Adafruit TouchScreen",
-                "C:/Users/shantrax/.platformio/packages/framework-arduino-avr/libraries/EEPROM/src",
                 "C:/Users/shantrax/.platformio/packages/framework-arduino-avr/libraries/HID/src",
                 "C:/Users/shantrax/.platformio/packages/framework-arduino-avr/libraries/SoftwareSerial/src",
                 ""
@@ -31,6 +31,7 @@
                 "limitSymbolsToIncludedHeaders": true,
                 "path": [
                     "C:/Users/shantrax/Documents/FAU/hiwi/gain_compensator_interface/arduino/gain_compensator/src",
+                    "C:/Users/shantrax/.platformio/packages/framework-arduino-avr/libraries/EEPROM/src",
                     "C:/Users/shantrax/Documents/FAU/hiwi/gain_compensator_interface/arduino/gain_compensator/.pio/libdeps/megaatmega2560/Adafruit FT6206 Library",
                     "C:/Users/shantrax/Documents/FAU/hiwi/gain_compensator_interface/arduino/gain_compensator/.pio/libdeps/megaatmega2560/Adafruit ILI9341",
                     "C:/Users/shantrax/Documents/FAU/hiwi/gain_compensator_interface/arduino/gain_compensator/.pio/libdeps/megaatmega2560/Adafruit GFX Library",
@@ -44,7 +45,6 @@
                     "C:/Users/shantrax/Documents/FAU/hiwi/gain_compensator_interface/arduino/gain_compensator/.pio/libdeps/megaatmega2560/Adafruit STMPE610",
                     "C:/Users/shantrax/Documents/FAU/hiwi/gain_compensator_interface/arduino/gain_compensator/.pio/libdeps/megaatmega2560/Adafruit TSC2007",
                     "C:/Users/shantrax/Documents/FAU/hiwi/gain_compensator_interface/arduino/gain_compensator/.pio/libdeps/megaatmega2560/Adafruit TouchScreen",
-                    "C:/Users/shantrax/.platformio/packages/framework-arduino-avr/libraries/EEPROM/src",
                     "C:/Users/shantrax/.platformio/packages/framework-arduino-avr/libraries/HID/src",
                     "C:/Users/shantrax/.platformio/packages/framework-arduino-avr/libraries/SoftwareSerial/src",
                     ""

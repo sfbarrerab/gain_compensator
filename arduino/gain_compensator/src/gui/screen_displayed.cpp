@@ -18,6 +18,7 @@ void delete_previous_page(int old_screen){
       delete_powers_page();
       break;
     case STATUS_PAGE:
+      delete_status_page();
       break;
     case POPUP:
       delete_submit_popup();
