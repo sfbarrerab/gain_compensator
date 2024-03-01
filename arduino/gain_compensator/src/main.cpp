@@ -7,7 +7,7 @@
 #include "gui/gui_mainpage.h"
 #include "touch_screen.h"
 #include "gui/screen_displayed.h"
-
+#include "rw_ch_settings.h"
 
 void setup() {
   Serial.begin(115200);
@@ -16,9 +16,9 @@ void setup() {
   // Create semaphore for serial printing
   if ( x_serial_txrx_semaphore == NULL )  // Check to confirm that the Serial Semaphore has not already been created.
   {
-    x_serial_txrx_semaphore = xSemaphoreCreateMutex();  // Create a mutex semaphore
+    x_serial_txrx_semaphore = xSemaphoreCreateMutex();
     if ( ( x_serial_txrx_semaphore ) != NULL )
-      xSemaphoreGive( ( x_serial_txrx_semaphore ) );  // Make the Serial Port available for use
+      xSemaphoreGive( ( x_serial_txrx_semaphore ) );
   }
 
   // Create queues of 10 elements for possible commands and messages
@@ -30,39 +30,40 @@ void setup() {
 	init_tft();
   init_touch_screen();
   init_set_page();
+  init_channels();
 
 
-  // Create task  
+  // Create tasks 
   xTaskCreate(
     task_txrx_serial
-    ,  "Tx and Rx for serial communication"   // name
-    ,  128  // stack size
+    ,  "Tx and Rx for serial communication"
+    ,  128  
     ,  NULL
-    ,  2  // Priority 
+    ,  2   
     ,  NULL );
 
   xTaskCreate(
     task_analogue_read_write
-    ,  "Analogue ports reading writing"   // name
-    ,  128  // stack size
+    ,  "Analogue ports reading writing"
+    ,  128  
     ,  NULL
-    ,  2  // Priority 
+    ,  2   
     ,  NULL );
 
-    xTaskCreate(
+  xTaskCreate(
     task_touch_screen
-    ,  "Touch screen coordinate acquisition"   // name
-    ,  128  // stack size
+    ,  "Touch screen coordinate acquisition"
+    ,  128  
     ,  NULL
-    ,  2  // Priority 
+    ,  2   
     ,  NULL );
 
 	xTaskCreate(
     task_print_display
-    ,  "Display layout and data collection"   // name
-    ,  4096  // stack size
+    ,  "Display layout and data collection"
+    ,  4096  
     ,  NULL
-    ,  2  // Priority 
+    ,  2   
     ,  NULL );
     
 }

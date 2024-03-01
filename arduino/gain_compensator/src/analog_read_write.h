@@ -2,6 +2,7 @@
 #include <Arduino.h>
 #include <Arduino_FreeRTOS.h>
 #include "serial_communication.h"
+#include "rw_ch_settings.h"
 
 // Define an array of Arduino analog ports
 const int analog_input_ports[MAX_NUMBER_OF_CHANNELS] = {A0, A1, A2, A3, A4, A5, A6, A8};
