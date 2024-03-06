@@ -22,7 +22,7 @@ void delete_previous_page(int old_screen){
       break;
     case POPUP:
       delete_submit_popup();
-      init_main_page();
+      print_again_tab_btns();
       break;
     default:
       break;

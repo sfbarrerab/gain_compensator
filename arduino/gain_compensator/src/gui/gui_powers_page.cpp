@@ -3,7 +3,6 @@
 gui_powers_page_t powers_page;
 TickType_t previous_tick_count;
 TickType_t current_tick_count;
-
   
 command_t powers_message_values_request;
 command_t message_received;  
@@ -26,7 +25,7 @@ void init_powers_page(){
     const_mini_label += String(i+1);
     const_mini_label += ": ";
 
-    if(x_messages_to_send_to_gui_queue != NULL && (xQueueReceive(x_messages_to_send_to_gui_queue, (void *)&message_received, 10) == pdTRUE))
+    if(x_messages_to_send_to_gui_queue != NULL && (xQueueReceive(x_messages_to_send_to_gui_queue, (void *)&message_received, QUEUE_RECEIVE_BLOCK_TIME) == pdTRUE))
     {
       label_channel_power = String(message_received.value);  
       label_channel_power += " dB";
@@ -47,10 +46,10 @@ void update_gui_powers_page(){
       powers_message_values_request.channel = i;
 
       if(x_received_commands_queue != NULL){
-        xQueueSend(x_received_commands_queue,(void *)&powers_message_values_request, QUEUE_SEND_BLOCK_TIME);
+        xQueueSend(x_received_commands_queue,(void *)&powers_message_values_request, QUEUE_RECEIVE_BLOCK_TIME);
       }
 
-      if(x_messages_to_send_to_gui_queue != NULL && (xQueueReceive(x_messages_to_send_to_gui_queue, (void *)&message_received, 10) == pdTRUE))
+      if(x_messages_to_send_to_gui_queue != NULL && (xQueueReceive(x_messages_to_send_to_gui_queue, (void *)&message_received, QUEUE_SEND_BLOCK_TIME) == pdTRUE))
       {
         new_power = String(message_received.value);  
         new_power += " dB";

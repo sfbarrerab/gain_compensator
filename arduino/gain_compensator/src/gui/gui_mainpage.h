@@ -32,4 +32,5 @@ extern Screens current_screen;
 
 void init_main_page();
 void delete_main_page();
+void print_again_tab_btns();
 void update_gui_main_page();

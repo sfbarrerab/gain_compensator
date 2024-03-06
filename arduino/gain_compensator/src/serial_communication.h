@@ -6,8 +6,9 @@
 #include "rw_ch_settings.h"
 
 #define QUEUE_LEN 10
-#define SEMAPHORE_BLOCK_TIME 15
+#define SEMAPHORE_BLOCK_TIME (10/portTICK_PERIOD_MS)
 #define QUEUE_SEND_BLOCK_TIME 15
+#define QUEUE_RECEIVE_BLOCK_TIME 10
 #define MAX_VALUE 256
 
 extern SemaphoreHandle_t x_serial_txrx_semaphore;

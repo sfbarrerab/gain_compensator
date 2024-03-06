@@ -14,14 +14,14 @@ void setup() {
   Serial.setTimeout(10); // This time might be increased if the string is large
 
   // Create semaphore for serial printing
-  if ( x_serial_txrx_semaphore == NULL )  // Check to confirm that the Serial Semaphore has not already been created.
+  if ( x_serial_txrx_semaphore == NULL ) 
   {
     x_serial_txrx_semaphore = xSemaphoreCreateMutex();
     if ( ( x_serial_txrx_semaphore ) != NULL )
       xSemaphoreGive( ( x_serial_txrx_semaphore ) );
   }
 
-  // Create queues of 10 elements for possible commands and messages
+  // Create queues of 10 elements for exchange of commands and response
   x_received_commands_queue = xQueueCreate(QUEUE_LEN, sizeof(command_t)); 
   x_messages_to_send_to_pc_queue = xQueueCreate(QUEUE_LEN,sizeof(command_t)); 
   x_messages_to_send_to_gui_queue = xQueueCreate(QUEUE_LEN,sizeof(command_t)); 

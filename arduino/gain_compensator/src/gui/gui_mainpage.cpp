@@ -39,6 +39,12 @@ void update_gui_main_page()
 	mainpage.attenuations_page_button->update_state(x,y,tft);
 }
 
+void print_again_tab_btns(){
+	mainpage.set_page_button->is_released(tft);
+	mainpage.powers_page_button->is_released(tft);
+	mainpage.attenuations_page_button->is_released(tft);
+}
+
 void delete_main_page(){
 	delete mainpage.set_page_button;
 	delete mainpage.powers_page_button;

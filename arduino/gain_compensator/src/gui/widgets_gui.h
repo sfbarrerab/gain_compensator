@@ -32,6 +32,7 @@ class Widget {
 public:
   Widget(int x, int y, int width, int height, const char* label, bool* gui_change_triggered);
   Widget(int x, int y, int radious, const char* label, bool* gui_change_triggered);
+  virtual ~Widget();
 
   virtual void update_state(int x_touch, int y_touch, Adafruit_ILI9341 tft);
   bool is_disabled() const;
@@ -39,14 +40,15 @@ public:
 
 protected:
   int x, y, width, height, radious;
+  const char* label;
   bool disabled;
   bool* gui_change_triggered;
-  const char* label;
 };
 
 class Button : public Widget {
 public:
   Button(int x, int y, int width, int height, const char* label, void (*callback)(), bool* gui_change_triggered);
+
   void is_released(Adafruit_ILI9341 tft);
   void is_pressed(Adafruit_ILI9341 tft);
   void update_state(int x_touch, int y_touch, Adafruit_ILI9341 tft) override;
@@ -67,7 +69,7 @@ private:
 class Slider : public Widget {
 public:
   Slider(int x, int y, int width, int height, int min_value, int max_value, int* value, const char* label,int r_slider, bool* gui_change_triggered);
-  
+
   void change_label(const char* new_label);
   void update_slider_value(int x_touched);
   int value_to_x_position(int val);
@@ -98,6 +100,7 @@ private:
 class Textbox : public Widget {
 public:
   Textbox(int x, int y, int width, int height, const char* label, bool* gui_change_triggered, int outline_color, int text_color, int text_size, const char* mini_label);
+
   void update_label(Adafruit_ILI9341 tft, const char* new_label);
   void init_label(Adafruit_ILI9341 tft);
 private:

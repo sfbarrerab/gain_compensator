@@ -16,10 +16,6 @@ void task_analogue_read_write(void *pvParameters){
       if(received_command.command == 0) // Read
       {
         message_to_send.value = analogRead(analog_input_ports[received_command.channel]);
-        // send the read value into the buffer for USB serial communication
-        if(x_messages_to_send_to_pc_queue != NULL){
-          xQueueSend(x_messages_to_send_to_pc_queue,(void *)&message_to_send, QUEUE_SEND_BLOCK_TIME);
-        }
       }else if (received_command.command == 1) //Set attenuation
       {
         // write the value in the selected channel
@@ -29,6 +25,11 @@ void task_analogue_read_write(void *pvParameters){
       {
         // activate PID algorithm
         update_config_epprom(received_command);
+      }else if(received_command.command == 4){ // The reading was received from the pc
+        message_to_send.value = analogRead(analog_input_ports[received_command.channel]);  
+        if(x_messages_to_send_to_pc_queue != NULL){
+          xQueueSend(x_messages_to_send_to_pc_queue,(void *)&message_to_send, QUEUE_SEND_BLOCK_TIME);
+        }
       }
 
       // Send the full message also to the GUI queue to print message in popup
@@ -36,6 +37,6 @@ void task_analogue_read_write(void *pvParameters){
         xQueueSend(x_messages_to_send_to_gui_queue,(void *)&message_to_send, QUEUE_SEND_BLOCK_TIME);
       }
     }
-    vTaskDelay( 10 / portTICK_PERIOD_MS);
+    vTaskDelay( 5 / portTICK_PERIOD_MS);
   }
 }

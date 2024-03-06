@@ -23,7 +23,7 @@ void update_config_epprom(command_t new_configuration){
 }
 
 void read_config_epprom(command_t* current_ch_configurations[MAX_NUMBER_OF_CHANNELS]){
-  
+    
   for(uint8_t i = 0; i < MAX_NUMBER_OF_CHANNELS; i++){
     EEPROM.get(INITIAL_ADDR+i*sizeof(command_t),*current_ch_configurations[i]);
   }

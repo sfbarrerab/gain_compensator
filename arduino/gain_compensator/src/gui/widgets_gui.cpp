@@ -7,6 +7,10 @@ Widget::Widget(int x, int y, int width, int height, const char* label, bool* gui
 // Constructor for the circular components (like radiobox)
 Widget::Widget(int x, int y, int radious, const char* label, bool* gui_change_triggered) : x(x), y(y), radious(radious), label(label), gui_change_triggered(gui_change_triggered), disabled(false){}
 
+Widget::~Widget(){
+
+}
+
 bool Widget::is_disabled() const {
   return disabled;
 }
@@ -25,9 +29,8 @@ void Widget::update_state(int x, int y, Adafruit_ILI9341 tft){
 Button::Button(int x, int y, int width, int height, const char* label, void (*callback)(), bool* gui_change_triggered)
     : Widget(x, y, width, height, label, gui_change_triggered), callback(callback), last_debounce_time(0), last_touch_processed(false) {}
 
-
-void Button::set_label(const char* newLabel) {
-  label = newLabel;
+void Button::set_label(const char* new_label) {
+  label = new_label;
 }
 
 const char* Button::get_label() const {
@@ -233,5 +236,5 @@ void Textbox::update_label(Adafruit_ILI9341 tft, const char* new_label){
 	tft.setTextSize(text_size);
 	if(new_label!=NULL)
 		tft.println(new_label);
-	// Next update: recognize the \n and plot it in a for
+		// Next update: recognize the \n and plot it in a for
 }
