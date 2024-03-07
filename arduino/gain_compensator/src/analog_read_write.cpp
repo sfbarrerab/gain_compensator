@@ -40,3 +40,28 @@ void task_analogue_read_write(void *pvParameters){
     vTaskDelay( 5 / portTICK_PERIOD_MS);
   }
 }
+
+void initi_analog_output_channels(){
+  command_t* current_ch_configurations[MAX_NUMBER_OF_CHANNELS];
+
+  // Allocate memory for each command_t structure
+  for (uint8_t i = 0; i < MAX_NUMBER_OF_CHANNELS; i++) {
+    current_ch_configurations[i] = new command_t;
+  }
+
+  read_config_epprom(current_ch_configurations);
+
+  // Apply configuration
+  for (uint8_t i = 0; i < MAX_NUMBER_OF_CHANNELS; i++) {
+    if(current_ch_configurations[i]->command == 1){
+      analogWrite(analog_output_ports[current_ch_configurations[i]->channel],current_ch_configurations[i]->value);
+    }else if (current_ch_configurations[i]->command == 2){
+      // activate the PID
+    }
+  }
+
+  // Free dynamically allocated memory
+  for (uint8_t i = 0; i < MAX_NUMBER_OF_CHANNELS; i++) {
+    delete current_ch_configurations[i];
+  }
+}

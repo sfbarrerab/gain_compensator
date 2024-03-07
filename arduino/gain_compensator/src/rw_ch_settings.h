@@ -4,6 +4,8 @@
 
 #define MAX_NUMBER_OF_CHANNELS 8
 #define INITIAL_ADDR 100
+#define DEFAULT_COMMAND 1
+#define DEFAULT_VALUE 0
 
 typedef struct{
   uint8_t command;

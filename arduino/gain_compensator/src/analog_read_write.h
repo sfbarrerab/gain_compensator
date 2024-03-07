@@ -13,3 +13,4 @@ extern QueueHandle_t x_messages_to_send_to_gui_queue;
 extern QueueHandle_t x_messages_to_send_to_pc_queue;
 
 void task_analogue_read_write(void *pvParameters);
+void initi_analog_output_channels();

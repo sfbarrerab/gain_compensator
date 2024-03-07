@@ -31,6 +31,7 @@ void setup() {
   init_touch_screen();
   init_set_page();
   init_channels();
+  initi_analog_output_channels();
 
 
   // Create tasks 

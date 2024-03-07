@@ -8,11 +8,11 @@ void init_channels(){
     previous_configuration[i] = {NULL, NULL, NULL};
     EEPROM.get(INITIAL_ADDR+i*sizeof(command_t),previous_configuration[i]);
     
-    // init the space if no previous setting was configured
+    // if no previous setting was configured, set default values
     if(previous_configuration[i].command == NULL){
       previous_configuration[i].channel = i;
-      previous_configuration[i].command = NULL;
-      previous_configuration[i].value = NULL;
+      previous_configuration[i].command = DEFAULT_COMMAND;
+      previous_configuration[i].value = DEFAULT_VALUE;
     }
 
   }
