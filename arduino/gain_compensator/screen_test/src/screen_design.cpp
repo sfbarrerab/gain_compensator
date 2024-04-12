@@ -95,22 +95,15 @@ void task_screen_layout(void *pvParameters)
 
   while(1){
 
-    static uint32_t scanTime = millis();
 
-    if (millis() - scanTime >= 20) {
-      if((x_old != x) || (y_old != y)){
-        if (s1.checkTouch(x, y)) {
-         Serial.print("Slider 1 = "); Serial.println(s1.getSliderPosition());
-        }
-        if (s2.checkTouch(x, y)) {
-          Serial.print("Slider 2 = "); Serial.println(s2.getSliderPosition());
-        }
-      }
-      
-      scanTime = millis();
-      x_old = x;
-      y_old = y;
+    if (s1.checkTouch(x, y)) {
+      Serial.print("Slider 1 = "); Serial.println(s1.getSliderPosition());
     }
+    if (s2.checkTouch(x, y)) {
+      Serial.print("Slider 2 = "); Serial.println(s2.getSliderPosition());
+    }
+
+    
     
     vTaskDelay(40/ portTICK_PERIOD_MS);
   }

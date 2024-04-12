@@ -20,7 +20,7 @@ void setup() {
   xTaskCreate(
     task_touch_screen
     ,  "Touch screen coordinate acquisition"
-    ,  1024  
+    ,  2048  
     ,  NULL
     ,  2   
     ,  NULL );

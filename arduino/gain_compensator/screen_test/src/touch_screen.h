@@ -4,7 +4,6 @@
 #include <Adafruit_FT6206.h>
 
 #include <SPI.h>
-#include <TFT_eSPI.h>
 
 #define DISPLAY_PIXEL_HEIGHT 240
 #define DISPLAY_PIXEL_WIDTH 320
